@@ -13,6 +13,19 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      backgroundColor: {
+        'foreground-rgb': 'var(--foreground-rgb)',
+        'background-main-page': 'var(--background-main-page)',
+        'backg-inputs': 'var(--backg-inputs)',
+        'backg-inputs-red': 'var(--backg-inputs-red)',
+        'backg-container-blue': 'var(--backg-container-blue)',
+        'backg-inputs-submit': 'var(--backg-inputs-submit)',
+        'background-start-rgb': 'var(--background-start-rgb)',
+        'background-end-rgb': 'var(--background-end-rgb)',
+      },
+      borderRadius: {
+        'inputs': 'var(--border-radius-input)',
+      },
     },
   },
   plugins: [],
