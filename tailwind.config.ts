@@ -19,6 +19,7 @@ const config: Config = {
         'backg-inputs': 'var(--backg-inputs)',
         'backg-inputs-red': 'var(--backg-inputs-red)',
         'backg-container-blue': 'var(--backg-container-blue)',
+        'backg-container-gray': 'var(--backg-container-gray)',
         'backg-inputs-submit': 'var(--backg-inputs-submit)',
         'background-start-rgb': 'var(--background-start-rgb)',
         'background-end-rgb': 'var(--background-end-rgb)',
@@ -26,6 +27,9 @@ const config: Config = {
       borderRadius: {
         'inputs': 'var(--border-radius-input)',
       },
+      fontSize: {
+        'dates': '10px'
+      }
     },
   },
   plugins: [],
