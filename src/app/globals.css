@@ -40,6 +40,17 @@ body {
 }
 .main_page {
   background : var(--background-main-page);
+  background-image:url('../../public/vector-main.png');
+  background-repeat: no-repeat;
+  background-size: 450px 450px;
+  background-position: bottom right;
+}
+.main_page.login {
+  background : var(--background-main-page);
+  background-image:url('../../public/vector-login.png');
+  background-repeat: no-repeat;
+  background-size: 300px 600px;
+  background-position: bottom right;
 }
 /* input {
   background : var(--backg-inputs);

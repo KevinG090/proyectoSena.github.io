@@ -1,7 +1,7 @@
 'use client';
 
-import Navbar from "@/app/components/Navbar/page";
-import Event from "@/app/components/Events/page";
+import Navbar from "@/app/components/Navbar";
+import Event from "@/app/components/Events";
 import { useState } from "react";
 import Sidebar from "@/app/components/Sidebar/page";
 
@@ -19,7 +19,7 @@ export default function page() {
       <div className="relative flex flex-row bg-backg-container-blue place-items-center rounded-inputs px-6 py-1 mb-4">
           <h5 className="relative place-items-left text-xs">Eventos</h5>
       </div>
-      <div className="flex flex-col place-items-center justify-between w-52">
+      <div className="flex flex-col place-items-center justify-between w-full">
         {
           events.map((val)=>{
             let items = val?.item ?? "Evento General"
