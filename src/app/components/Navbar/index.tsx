@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import { useRouter } from 'next/navigation'
-import Sidebar from "../Sidebar/page";
+import Sidebar from "@/app/components/Sidebar";
 import { useCallback, useState } from "react";
 
 export default function Navbar() {
   const router = useRouter()
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean | null>(false);
 
   const showSidebar = useCallback(()=>{
     setSidebarOpen(!sidebarOpen)

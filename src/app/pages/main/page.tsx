@@ -3,7 +3,6 @@
 import Navbar from "@/app/components/Navbar";
 import Event from "@/app/components/Events";
 import { useState } from "react";
-import Sidebar from "@/app/components/Sidebar/page";
 
 export default function page() {
   const [events, setEvents] = useState([
@@ -21,11 +20,11 @@ export default function page() {
       </div>
       <div className="flex flex-col place-items-center justify-between w-full">
         {
-          events.map((val)=>{
+          events.map((val,index)=>{
             let items = val?.item ?? "Evento General"
             let fecha = val?.fecha ?? ""
             let contenido = val?.contenido ?? "contenido"
-            return <Event item={items} fecha={fecha} contenido={contenido}/>
+            return <Event key={index} item={items} fecha={fecha} contenido={contenido}/>
           })
         }
       </div >

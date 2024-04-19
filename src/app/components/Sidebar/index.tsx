@@ -1,6 +1,8 @@
-import Image from "next/image";
+'use client';
+
+// import Image from "next/image";
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 // import { infoUser } from "@/app/hooks/AuthHook";
 
 export default function Sidebar({isSidebarOpen = false}) {
@@ -42,3 +44,4 @@ export default function Sidebar({isSidebarOpen = false}) {
     </div>
   )
 }
+// export default Sidebar;
