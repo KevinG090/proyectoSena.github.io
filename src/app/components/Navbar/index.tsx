@@ -27,15 +27,9 @@ export default function Navbar() {
       onClick={() => showSidebar()}
     />
     <button
-      className="absolute bg-backg-inputs-red rounded-inputs py-1 px-5 right-3 top-6 z-50"
-      onClick={() => router.push('/')}
-    >{/* Cerrar Sesión */}
-    </button>
-
-    <button
       className="absolute bg-backg-inputs-submit rounded-inputs py-1 px-5 right-3 top-2 z-50"
       onClick={() => router.push('/pages/main')}
-    >{/* Inicio */}
+    >Inicio
     </button>
   </div>
   )

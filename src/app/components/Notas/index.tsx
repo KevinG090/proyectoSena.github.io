@@ -12,7 +12,7 @@ export default function Notas({ item = "", fecha = "", notas = [{val:0}] }) {
     <div className="grid grid-cols-2 rounded-inputs md:grid-cols-3 lg:grid-cols-4 gap-4">
       {notas.map((item,i)=>{
         return (
-          <div className="bg-background-main-page rounded-inputs p-2">
+          <div key={i} className="bg-background-main-page rounded-inputs p-2">
             <h5 className="flex text-center md:text-center text-xs">Nota {i+1}: {item?.val ?? 0}</h5>
           </div>
         )

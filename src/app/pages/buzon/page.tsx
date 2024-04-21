@@ -21,11 +21,11 @@ export default function page() {
       </div>
       <div className="flex flex-col place-items-center justify-between w-52">
         {
-          events.map((val)=>{
+          events.map((val,index)=>{
             let items = val?.item ?? "Buzon General"
             let fecha = val?.fecha ?? ""
             let contenido = val?.contenido ?? "contenido del Buzon"
-            return <Buzon item={items} fecha={fecha} contenido={contenido}/>
+            return <Buzon key={index} item={items} fecha={fecha} contenido={contenido}/>
           })
         }
       </div >

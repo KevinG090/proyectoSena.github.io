@@ -1,15 +1,47 @@
 'use client';
 
 import { useRouter } from 'next/navigation'
+import { useState, useEffect, useCallback, cache } from "react";
+import { fetchGetRequest } from "./utils/fetch"
+import { urlLogin } from "./utils/routes"
+import { notify, notifyError} from "./utils/notify"
 
 export default function FormLogin() {
   const router = useRouter()
+  const [loadingItems, setLoadingItems] = useState(false)
 
   const createInvoice = async (ev) => {
     ev.preventDefault();
+
     const formData = new FormData(ev.currentTarget);
-    const body = Object.fromEntries(Object.entries(Object.fromEntries(formData)))
-    router.push('/pages/main')
+    const formDataEntries = formData.entries();
+  
+    // Convertir FormDataEntries a un array de objetos
+    const formDataArray = Array.from(formDataEntries);
+  
+    // Modificar los datos según sea necesario
+    const modifiedFormData = formDataArray.map(([key, value]) => {
+      return [key, value];
+    });
+    // Convertir el array modificado a URLSearchParams
+    const modifiedQueries = new URLSearchParams(modifiedFormData).toString();
+
+
+    try {
+      const url = urlLogin()
+      setLoadingItems(true)
+      const {data} = await fetchGetRequest(`${url}?${modifiedQueries}`)
+      notify(data?.msg ?? "Consulta Exitosa")
+      setLoadingItems(false)
+      router.push('/pages/main')
+      
+    }catch (e){
+      let error = e.message ?? "Error en la consulta"
+      notifyError(error)
+      setLoadingItems(false)
+      router.push('/')
+    }
+  
   };
 
   return (
@@ -28,11 +60,11 @@ export default function FormLogin() {
         />
       </div>
       <div className="form-login relative flex flex-col place-items-left mt-5 mb-10">
-        <label htmlFor="pass">Contraseña <b>*</b></label>
+        <label htmlFor="passworld">Contraseña <b>*</b></label>
         <input
           type="text"
-          name="pass"
-          id="pass"
+          name="passworld"
+          id="passworld"
           className="bg-backg-inputs rounded-inputs mt-2 py-1 px-5"
           required
         />

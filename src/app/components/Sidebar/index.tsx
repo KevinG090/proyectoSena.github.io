@@ -39,7 +39,14 @@ export default function Sidebar({isSidebarOpen = false}) {
         <button
           className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
           onClick={() => router.push('/pages/contactos')}
-        >Contactos
+          >Contactos
+        </button>
+
+        <button
+          className="flex justify-center bg-backg-inputs-red rounded-inputs py-1 px-5 w-40 mt-auto mb-10"
+          // className="absolute bg-backg-inputs-red rounded-inputs py-1 px-5 right-3 top-12 z-50"
+          onClick={() => router.push('/')}
+        >Cerrar Sesión
         </button>
     </div>
   )
