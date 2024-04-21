@@ -1,21 +1,50 @@
 'use client';
 
+import React, { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
-import { createContext, useContext, useState } from "react";
+import Home from '../page';
 
-let initialUser = {
+const initialUser = {
+  setInfoLogout:(dict)=> {},
+  updateUserInfo:(dict)=> {},
   isSignedIn: false,
   userInfo: {},
   roleInfo: null,
-  quotaInfo: null,
   userPermissions: [],
-  commerceInfo: null,
 };
 
 export const infoContext = createContext({
-  ...initialUser
-})
+  ...initialUser,
+});
 
-export const infoUser = () => {
-  return useContext(infoContext)
-}
+export const UserInfoProvider = ({ children }) => {
+  const router = useRouter()
+  const [userInfo, setUserInfo] = useState(initialUser);
+
+  const updateUserInfo = (updatedInfo) => {
+    setUserInfo((prevInfo) => ({ ...prevInfo, ...updatedInfo }));
+  };
+
+  useEffect(() => {
+    if (
+      (userInfo?.isSignedIn ?? false) == false &&
+      localStorage.getItem("userLogin") == "true"
+    ) updateUserInfo({ isSignedIn: true });
+    else if ((!userInfo?.isSignedIn ?? false) && localStorage.getItem("userLogin") == "false") router.push('/')
+    else (router.push('/pages/main'))
+  }, [userInfo])
+
+  const setInfoLogout = () => {
+    localStorage.setItem("userLogin", false);
+    updateUserInfo({ isSignedIn: false, userInfo: null });
+    router.push('/')
+  }
+
+  return (
+    <infoContext.Provider value={{ userInfo, updateUserInfo, setInfoLogout }}>
+      {(!userInfo?.isSignedIn ?? false) ? (
+        <Home />
+      ) : (children)}
+    </infoContext.Provider>
+  );
+};

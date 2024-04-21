@@ -1,24 +1,28 @@
 'use client';
 
 import { useRouter } from 'next/navigation'
-import { useState, useEffect, useCallback, cache } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { fetchGetRequest } from "./utils/fetch"
 import { urlLogin } from "./utils/routes"
-import { notify, notifyError} from "./utils/notify"
+import { notify, notifyError } from "./utils/notify"
+import { infoContext } from "./hooks/AuthHook"
 
 export default function FormLogin() {
   const router = useRouter()
-  const [loadingItems, setLoadingItems] = useState(false)
+  const { userInfo, updateUserInfo } = useContext(infoContext);
 
-  const createInvoice = async (ev) => {
+  const [loadingItems, setLoadingItems] = useState(false)
+  const [infoUser, setInfoUser] = useState(null)
+
+  const createInvoice = useCallback(async (ev) => {
     ev.preventDefault();
 
     const formData = new FormData(ev.currentTarget);
     const formDataEntries = formData.entries();
-  
+
     // Convertir FormDataEntries a un array de objetos
     const formDataArray = Array.from(formDataEntries);
-  
+
     // Modificar los datos según sea necesario
     const modifiedFormData = formDataArray.map(([key, value]) => {
       return [key, value];
@@ -30,19 +34,25 @@ export default function FormLogin() {
     try {
       const url = urlLogin()
       setLoadingItems(true)
-      const {data} = await fetchGetRequest(`${url}?${modifiedQueries}`)
-      notify(data?.msg ?? "Consulta Exitosa")
+      const { data } = await fetchGetRequest(`${url}?${modifiedQueries}`)
+      // notify(data?.msg ?? "Consulta Exitosa")
+      setInfoUser(false)
       setLoadingItems(false)
-      router.push('/pages/main')
+      localStorage.setItem("userLogin", true);
+      updateUserInfo({ isSignedIn: true, userInfo: { name: 'John Doe' } });
       
-    }catch (e){
+      
+    } catch (e) {
       let error = e.message ?? "Error en la consulta"
       notifyError(error)
+      localStorage.setItem("userLogin", false);
+      updateUserInfo({ isSignedIn: null});
       setLoadingItems(false)
       router.push('/')
     }
-  
-  };
+  }, [infoUser]
+  )
+
 
   return (
     <form
