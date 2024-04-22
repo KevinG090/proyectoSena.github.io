@@ -6,6 +6,11 @@ export const urlGetListCourses = () => {
     return `${ulrBaseApi}/cursos/listar-cursos`
 }
 
+// <<------- Cursos -------->>
+export const urlGetListEvents = () => {
+    return `${ulrBaseApi}/cursos/listar-eventos`
+}
+
 // <<------- Usuarios -------->>
 export const urlGetListUsers = () => {
     return `${ulrBaseApi}/users/listar-usuarios`

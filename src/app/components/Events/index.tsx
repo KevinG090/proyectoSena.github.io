@@ -10,7 +10,7 @@ export default function Event({item = "",fecha = "",contenido = ""}) {
         <h5 className="relative place-items-rigth text-dates">{fecha}</h5>
         </div>
 
-      <div className="flex flex-col bg-background-main-page place-items-center justify-center rounded mt-2 h-16 ">
+      <div className="flex flex-col bg-background-main-page place-items-center justify-center rounded mt-2 h-auto ">
         <div className="flex flex-col relative place-items-center">
           <h5 className="flex text-center md:text-center text-xs">{contenido}</h5>
             </div>
