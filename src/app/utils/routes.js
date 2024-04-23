@@ -1,6 +1,6 @@
 
-// const ulrBaseApi = process.env.NEXT_PUBLIC_BK_BASE_FAST_API
-const ulrBaseApi = "http://127.0.0.1:8000/api"
+const ulrBaseApi = process.env.NEXT_PUBLIC_BK_BASE_FAST_API
+// const ulrBaseApi = "http://127.0.0.1:8000/api"
 
 // <<------- Cursos -------->>
 export const urlGetListCourses = () => {
