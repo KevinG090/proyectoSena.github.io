@@ -39,7 +39,24 @@ export default function FormLogin() {
       setInfoUser(false)
       setLoadingItems(false)
       localStorage.setItem("userLogin", true);
-      updateUserInfo({ isSignedIn: true, userInfo: { name: 'John Doe' } });
+      localStorage.setItem("id_usuario",  data?.obj?.pk_id_usuario);
+      updateUserInfo({
+        isSignedIn: true,
+        userInfo: {
+          nombre_usuario: data?.obj?.nombre_usuario ?? "",
+          id_usuario: data?.obj?.pk_id_usuario ?? null,
+          nombre_tipo_usuario: data?.obj?.nombre_tipo_usuario ?? "",
+          correo: data?.obj?.correo ?? "",
+          identificacion: data?.obj?.identificacion ?? "",
+        },
+        roleInfo: {
+          tipo_usuario: data?.obj?.pk_id_tipo_usuario ?? "",
+        },
+        userPermissions: {
+          permisos: data?.obj?.permisos ?? [],
+
+        }
+      });
       
       
     } catch (e) {

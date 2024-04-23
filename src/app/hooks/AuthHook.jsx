@@ -1,15 +1,18 @@
 'use client';
 
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation'
 import Home from '../page';
+import { fetchGetRequest } from "../utils/fetch"
+import { urlUser } from "../utils/routes"
 
 const initialUser = {
-  setInfoLogout:(dict)=> {},
-  updateUserInfo:(dict)=> {},
+  setInfoLogout: (dict) => { },
+  getInfo: () => { },
+  updateUserInfo: (dict) => { },
   isSignedIn: false,
   userInfo: {},
-  roleInfo: null,
+  roleInfo: {},
   userPermissions: [],
 };
 
@@ -25,6 +28,41 @@ export const UserInfoProvider = ({ children }) => {
     setUserInfo((prevInfo) => ({ ...prevInfo, ...updatedInfo }));
   };
 
+  const searchInfoUser = useCallback(async () => {
+    let usuario = localStorage.getItem("id_usuario")
+    if (!["","null",null,false].includes(usuario)) {
+      const url = urlUser()
+      const { data } = await fetchGetRequest(`${url}?pk_id_usuario=${usuario}`)
+      updateUserInfo({
+        userInfo: {
+          nombre_usuario: data?.obj?.nombre_usuario ?? "",
+          id_usuario: data?.obj?.pk_id_usuario ?? null,
+          nombre_tipo_usuario: data?.obj?.nombre_tipo_usuario ?? "",
+          correo: data?.obj?.correo ?? "",
+          identificacion: data?.obj?.identificacion ?? "",
+        },
+        roleInfo: {
+          tipo_usuario: data?.obj?.pk_id_tipo_usuario ?? "",
+        },
+        userPermissions: {
+          permisos: data?.obj?.permisos ?? [],
+
+        }
+      });
+    }
+
+  }, [
+    userInfo?.userInfo?.id_usuario,
+  ])
+
+  useEffect(() => {
+    searchInfoUser()
+  }, [searchInfoUser])
+
+  const getInfo = () => {
+    return userInfo
+  }
+
   useEffect(() => {
     if (
       (userInfo?.isSignedIn ?? false) == false &&
@@ -36,15 +74,20 @@ export const UserInfoProvider = ({ children }) => {
 
   const setInfoLogout = () => {
     localStorage.setItem("userLogin", false);
+    localStorage.setItem("id_usuario", null);
     updateUserInfo({ isSignedIn: false, userInfo: null });
     router.push('/')
   }
 
   return (
-    <infoContext.Provider value={{ userInfo, updateUserInfo, setInfoLogout }}>
-      {(!userInfo?.isSignedIn ?? false) ? (
-        <Home />
-      ) : (children)}
+    <infoContext.Provider value={{ userInfo, updateUserInfo, setInfoLogout, getInfo }}>
+      {
+        ([{}, null, false].includes(userInfo?.userInfo?.id_usuario ?? false) && (userInfo?.isSignedIn ?? false)) ?
+          (<>Cargando...</>) :
+          (!userInfo?.isSignedIn ?? false) ? (
+            <Home />
+          ) : (children)
+      }
     </infoContext.Provider>
   );
 };

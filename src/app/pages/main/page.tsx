@@ -1,6 +1,5 @@
 'use client';
 
-import Navbar from "@/app/components/Navbar";
 import Event from "@/app/components/Events";
 
 import { useState, useEffect, useCallback, cache } from "react";
@@ -41,7 +40,6 @@ export default function page() {
   
   return (
     <main className="main_page flex min-h-screen flex-col items-center">
-      <Navbar/>
       <div className="relative flex flex-row bg-backg-container-blue place-items-center rounded-inputs px-6 py-1 mb-4">
           <h5 className="relative place-items-left text-xs">Eventos</h5>
       </div>

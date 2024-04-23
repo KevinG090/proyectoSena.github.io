@@ -1,14 +1,15 @@
 
-const ulrBaseApi = process.env.NEXT_PUBLIC_BK_BASE_FAST_API
+// const ulrBaseApi = process.env.NEXT_PUBLIC_BK_BASE_FAST_API
+const ulrBaseApi = "http://127.0.0.1:8000/api"
 
 // <<------- Cursos -------->>
 export const urlGetListCourses = () => {
     return `${ulrBaseApi}/cursos/listar-cursos`
 }
 
-// <<------- Cursos -------->>
+// <<------- Eventos -------->>
 export const urlGetListEvents = () => {
-    return `${ulrBaseApi}/cursos/listar-eventos`
+    return `${ulrBaseApi}/eventos/listar-eventos`
 }
 
 // <<------- Usuarios -------->>
@@ -24,4 +25,7 @@ export const urlGetListMaterias = () => {
 // <<------- login -------->>
 export const urlLogin = () => {
     return `${ulrBaseApi}/login/verify`
+}
+export const urlUser = () => {
+    return `${ulrBaseApi}/login/user`
 }
