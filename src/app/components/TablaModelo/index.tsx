@@ -65,7 +65,7 @@ export default function TablaModelo(
                   <tr className="model_table border-b dark:model_table dark:border-gray-700">
                     {Object.values(item).map((value) => {
                       return (
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer">
                           {value}
                         </th>
                       )
