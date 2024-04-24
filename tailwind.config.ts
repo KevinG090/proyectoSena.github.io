@@ -23,6 +23,7 @@ const config: Config = {
         'backg-inputs-submit': 'var(--backg-inputs-submit)',
         'background-start-rgb': 'var(--background-start-rgb)',
         'background-end-rgb': 'var(--background-end-rgb)',
+        'background-table-rgb': 'var(--background-table-rgb)',
       },
       borderRadius: {
         'inputs': 'var(--border-radius-input)',

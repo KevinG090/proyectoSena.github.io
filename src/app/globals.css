@@ -12,6 +12,7 @@
   --backg-container-gray: #D9D9D9;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --background-table-rgb: rgb(66 85 113);
   --border-radius-input: 20px
 }
 
@@ -63,6 +64,9 @@ button.button-login {
 .focus-pointer:focus,
 .focus-pointer:focus-within {
   cursor: pointer;
+}
+.model_table {
+  background-color : var(--background-table-rgb);
 }
 
 /*dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert before:absolute 
