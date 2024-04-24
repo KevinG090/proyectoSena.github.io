@@ -3,6 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp() {
   return (
+    <div>
       <ToastContainer
         position={"top-center"}
         autoClose={5000}
@@ -10,7 +11,8 @@ function MyApp() {
         closeOnClick={true}
         pauseOnHover={true}
         draggable={true}
-      /> 
+      />
+    </div>
   )
 }
 
