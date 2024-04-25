@@ -57,6 +57,7 @@ export default function FormLogin() {
 
         }
       });
+      router.push('/pages/main')
       
       
     } catch (e) {
