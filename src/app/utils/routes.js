@@ -16,6 +16,9 @@ export const urlGetListEvents = () => {
 export const urlGetListUsers = () => {
     return `${ulrBaseApi}/users/listar-usuarios`
 }
+export const urlCreateUsers = () => {
+    return `${ulrBaseApi}/users/crear-usuarios`
+}
 
 // <<------- Materias -------->>
 export const urlGetListMaterias = () => {

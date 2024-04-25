@@ -1,18 +1,21 @@
 'use client';
 import TablaModelo from "@/app/components/TablaModelo";
 
+import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback, cache, ReactNode } from "react";
 import { fetchGetRequest } from "../../utils/fetch"
 import { urlGetListUsers } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
 
 export default function page() {
+  const router = useRouter()
   const [searchName, setSearchName] = useState<null | string>("")
   const [searchId, setSearchId] = useState<null | string>("")
   const [usuarios, setUsuarios] = useState([])
   const [loadingItems, setLoadingItems] = useState(false)
 
   const getListUsers = useCallback(async () => {
+
     if (loadingItems) return
     try {
       setLoadingItems(true)
@@ -49,7 +52,13 @@ export default function page() {
   }, [getListUsers])
 
   return (
-    <main className="main_page flex min-h-screen flex-col items-center">
+    <div className="main_page flex min-h-screen flex-col items-center">
+        <button
+          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+          onClick={() => router.push('/pages/users/create-users')}
+        >Creacion de usuarios
+        </button>
+
       <TablaModelo
         title={"Tabla de Usuarios"}
         description=""
@@ -93,6 +102,6 @@ export default function page() {
         </div>
       </TablaModelo>
 
-    </main>
+    </div>
   )
 }

@@ -1,10 +1,12 @@
 'use client';
 
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import Home from '../page';
 import { fetchGetRequest } from "../utils/fetch"
 import { urlUser } from "../utils/routes"
+import RoutePermisions from "../utils/permission"
+
 
 const initialUser = {
   setInfoLogout: (dict) => { },
@@ -22,6 +24,9 @@ export const infoContext = createContext({
 
 export const UserInfoProvider = ({ children }) => {
   const router = useRouter()
+  const path = usePathname()
+  const allPermisions = RoutePermisions()
+
   const [userInfo, setUserInfo] = useState(initialUser);
 
   const updateUserInfo = (updatedInfo) => {
@@ -30,7 +35,7 @@ export const UserInfoProvider = ({ children }) => {
 
   const searchInfoUser = useCallback(async () => {
     let usuario = localStorage.getItem("id_usuario")
-    if (!["","null",null,false].includes(usuario)) {
+    if (!["", "null", null, false].includes(usuario)) {
       const url = urlUser()
       const { data } = await fetchGetRequest(`${url}?pk_id_usuario=${usuario}`)
       updateUserInfo({
@@ -59,6 +64,34 @@ export const UserInfoProvider = ({ children }) => {
     searchInfoUser()
   }, [searchInfoUser])
 
+  useEffect(() => {
+    // console.log(path == "/pages/users/create-users")
+    // console.log(`'${path}'`,String(path).replace(" ","") in Object.keys(allPermisions))
+    if (!(path in Object.keys(allPermisions)) || localStorage.getItem("userLogin") != "true") return
+    else if (allPermisions[path]["permisions"][0] == "*") return
+    // console.log(allPermisions[path]["permisions"])
+
+    let validate = false
+    for (permiso in userInfo?.userPermissions?.permisos ?? []) {
+      if (permiso in allPermisions[path]["permisions"]) validate = true
+    }
+
+    if (
+      !validate &&
+      allPermisions[path]["typeUsers"][0] != "*" &&
+      userInfo?.roleInfo?.tipo_usuario in allPermisions[path]["typeUsers"]
+    ) {
+      allPermisions[path]["typeUsers"]
+    }
+
+    if (!validate){
+      router.push('/pages/main')
+    }
+
+  }, [
+    path,allPermisions, userInfo?.userPermissions?.permisos, userInfo?.roleInfo?.tipo_usuario
+  ])
+
   const getInfo = () => {
     return userInfo
   }
@@ -69,7 +102,7 @@ export const UserInfoProvider = ({ children }) => {
       localStorage.getItem("userLogin") == "true"
     ) updateUserInfo({ isSignedIn: true });
     else if ((!userInfo?.isSignedIn ?? false) && localStorage.getItem("userLogin") == "false") router.push('/')
-    else (router.push('/pages/main'))
+    // else (router.push('/pages/main'))
   }, [userInfo])
 
   const setInfoLogout = () => {

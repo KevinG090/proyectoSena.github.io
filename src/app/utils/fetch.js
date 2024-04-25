@@ -1,20 +1,35 @@
-// const axios = require('axios').default;
 import axios from 'axios'
-import { useEffect, useState } from 'react'
 
-export const fetchGetRequest = async (url,params = {}) => {
+let temp_headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+}
+
+export const fetchGetRequest = async (url, params = {}) => {
     try {
-        // let queries = params != {} ? new URLSearchParams(params.entries()).toString(): "";
         const config_request = {
-            headers : {
-                'Access-Control-Allow-Origin' : '*',
-                'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            }
+            headers: {...temp_headers}
         }
-        let response = await axios.get(url,config_request)
+        let response = await axios.get(url, config_request)
         return response
     }
     catch (e) {
+        throw `Error al consultar ${e}`
+    }
+}
+
+export const fetchPostRequest = async (url, body = {}) => {
+    try {
+        let response = await axios({
+            method: 'post',
+            url: url,
+            data: body,
+            headers:temp_headers
+        })
+        return response
+    }
+    catch (e) {
+        console.log(e)
         throw `Error al consultar ${e}`
     }
 }
