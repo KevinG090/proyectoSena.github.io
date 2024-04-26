@@ -7,7 +7,7 @@ import { infoContext } from "../../hooks/AuthHook";
 import TipoUsuarios from "../../utils/enum";
 
 
-export default function Sidebar({ isSidebarOpen = false }) {
+export default function Sidebar({ isSidebarOpen = false, showSidebar = () => { } }) {
   const router = useRouter()
   const { getInfo, setInfoLogout } = useContext(infoContext);
   const [InfoUser, setInfoUser] = useState<any>({});
@@ -15,6 +15,11 @@ export default function Sidebar({ isSidebarOpen = false }) {
   const cerrarSesion = () => {
     setInfoLogout({ isSignedIn: false });
   }
+  const onChangeRoutes = (route: string) => {
+    showSidebar()
+    router.push(route)
+  }
+
   useEffect(() => {
     let res: any = getInfo()
     setInfoUser(res ?? {})
@@ -30,35 +35,35 @@ export default function Sidebar({ isSidebarOpen = false }) {
         width={140}
         height={150}
         priority
-        onClick={() => router.push('/pages/main')}
+        onClick={() => onChangeRoutes('/pages/main')}
       />
       <button
         className="flex justify-center place-items-center text-center bg-backg-container-blue rounded-inputs py-1 px-5 mt-10 w-40"
-        onClick={() => router.push('/pages/notas')}
+        onClick={() => onChangeRoutes('/pages/notas')}
       >Notas
       </button>
       {[TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") && (
         <button
           className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
-          onClick={() => router.push('/pages/cursos')}
+          onClick={() => onChangeRoutes('/pages/cursos')}
         >Cursos
         </button>
       )}
       {(InfoUser?.roleInfo?.tipo_usuario ?? "") == TipoUsuarios.ADMINISTRADOR && (
         <button
           className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
-          onClick={() => router.push('/pages/users')}
+          onClick={() => onChangeRoutes('/pages/users')}
         >Usuarios
         </button>
       )}
       <button
         className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40 "
-        onClick={() => router.push('/pages/buzon')}
+        onClick={() => onChangeRoutes('/pages/buzon')}
       >Buzon
       </button>
       <button
         className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
-        onClick={() => router.push('/pages/contactos')}
+        onClick={() => onChangeRoutes('/pages/contactos')}
       >Contactos
       </button>
 

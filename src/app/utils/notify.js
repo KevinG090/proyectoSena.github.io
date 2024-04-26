@@ -14,7 +14,7 @@ const notify = (msg = "Info", otherOptions = {}) => {
   });
 };
 
-const notifyError = (msg = "Error", autoClose = 5000, otherOptions = {}) => {
+const notifyError = (msg = "Error", autoClose = 4000, otherOptions = {}) => {
   toast.warning(msg, {
     position: "top-center",
     hideProgressBar: false,

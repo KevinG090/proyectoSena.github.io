@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
   <div className="flex mb-12" >
-    <Sidebar isSidebarOpen={sidebarOpen ?? false} />
+    <Sidebar isSidebarOpen={sidebarOpen ?? false}  showSidebar={showSidebar}/>
     <Image
       className="cursor-pointer absolute top-2 left-2 z-50"
       src="/menu.png"

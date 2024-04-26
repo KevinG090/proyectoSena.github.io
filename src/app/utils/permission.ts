@@ -23,7 +23,7 @@ export default function RoutePermisions() {
       },
       "/pages/users/create-users": {
         "typeUsers": ["*"],
-        "permisions": [1]
+        "permisions": ["*"]
       },
     }
   )

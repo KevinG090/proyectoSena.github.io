@@ -6,7 +6,7 @@ import Home from '../page';
 import { fetchGetRequest } from "../utils/fetch"
 import { urlUser } from "../utils/routes"
 import RoutePermisions from "../utils/permission"
-
+import { notify, notifyError } from "../utils/notify"
 
 const initialUser = {
   setInfoLogout: (dict) => { },
@@ -28,6 +28,18 @@ export const UserInfoProvider = ({ children }) => {
   const allPermisions = RoutePermisions()
 
   const [userInfo, setUserInfo] = useState(initialUser);
+
+  useEffect(() => {
+    if (
+      (userInfo?.isSignedIn ?? false) == false &&
+      localStorage.getItem("userLogin") == "true"
+    ) updateUserInfo({ isSignedIn: true });
+    else if (
+      !(userInfo?.isSignedIn ?? false) &&
+      localStorage.getItem("userLogin") == "false"
+    ) router.push('/')
+    // else (router.push('/pages/main'))
+  }, [userInfo])
 
   const updateUserInfo = (updatedInfo) => {
     setUserInfo((prevInfo) => ({ ...prevInfo, ...updatedInfo }));
@@ -64,46 +76,33 @@ export const UserInfoProvider = ({ children }) => {
     searchInfoUser()
   }, [searchInfoUser])
 
-  useEffect(() => {
-    // console.log(path == "/pages/users/create-users")
-    // console.log(`'${path}'`,String(path).replace(" ","") in Object.keys(allPermisions))
-    if (!(path in Object.keys(allPermisions)) || localStorage.getItem("userLogin") != "true") return
-    else if (allPermisions[path]["permisions"][0] == "*") return
-    // console.log(allPermisions[path]["permisions"])
-
-    let validate = false
-    for (permiso in userInfo?.userPermissions?.permisos ?? []) {
-      if (permiso in allPermisions[path]["permisions"]) validate = true
-    }
-
-    if (
-      !validate &&
-      allPermisions[path]["typeUsers"][0] != "*" &&
-      userInfo?.roleInfo?.tipo_usuario in allPermisions[path]["typeUsers"]
-    ) {
-      allPermisions[path]["typeUsers"]
-    }
-
-    if (!validate){
-      router.push('/pages/main')
-    }
-
-  }, [
-    path,allPermisions, userInfo?.userPermissions?.permisos, userInfo?.roleInfo?.tipo_usuario
-  ])
-
   const getInfo = () => {
     return userInfo
   }
 
   useEffect(() => {
+    if (!(Object.keys(allPermisions).includes(path)) || localStorage.getItem("userLogin") != "true") return
+    else if (allPermisions[path]["permisions"][0] == "*") return
+
+    let validate = false
+    for (permiso in userInfo?.userPermissions?.permisos ?? []) {
+      if (allPermisions[path]["permisions"].includes(permiso)) validate = true
+    }
+
     if (
-      (userInfo?.isSignedIn ?? false) == false &&
-      localStorage.getItem("userLogin") == "true"
-    ) updateUserInfo({ isSignedIn: true });
-    else if ((!userInfo?.isSignedIn ?? false) && localStorage.getItem("userLogin") == "false") router.push('/')
-    // else (router.push('/pages/main'))
-  }, [userInfo])
+      validate &&
+      allPermisions[path]["typeUsers"][0] != "*" &&
+      !(allPermisions[path]["typeUsers"].includes(userInfo?.roleInfo?.tipo_usuario))
+    ) validate = false
+
+    if (!validate) {
+      router.push('/pages/main')
+      notifyError("Usuario sin permisos", 1000)
+    }
+
+  }, [
+    path, allPermisions, userInfo?.userPermissions?.permisos, userInfo?.roleInfo?.tipo_usuario
+  ])
 
   const setInfoLogout = () => {
     localStorage.setItem("userLogin", false);
@@ -116,9 +115,16 @@ export const UserInfoProvider = ({ children }) => {
     <infoContext.Provider value={{ userInfo, updateUserInfo, setInfoLogout, getInfo }}>
       {
         ([{}, null, false].includes(userInfo?.userInfo?.id_usuario ?? false) && (userInfo?.isSignedIn ?? false)) ?
-          (<>Cargando...</>) :
+          (
+            <div className="main_page login flex min-h-screen flex-col items-center justify-around p-20 sm:flex-row">
+              Cargando...
+            </div>
+          ) :
           (!userInfo?.isSignedIn ?? false) ? (
-            <Home />
+            // <Home />
+            <div className="main_page login flex min-h-screen flex-col items-center justify-around p-20 sm:flex-row">
+              Cargando...
+            </div>
           ) : (children)
       }
     </infoContext.Provider>
