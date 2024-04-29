@@ -22,11 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+      <MyApp />
       <UserInfoProvider>
         {children}
       </UserInfoProvider>
       </body>
-      <MyApp />
     </html>
   );
 }

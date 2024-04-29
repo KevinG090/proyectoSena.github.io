@@ -31,7 +31,6 @@ export default function TablaModelo(
   }: Entradas
 ) {
 
-  console.log(items)
   return (
     <div className="relative overflow-x-auto rounded-lg model_table dark:model_table dark:text-gray-800 max-[450px]:w-[25rem] max-[400px]:w-[20rem] md:w-[40rem]">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
@@ -57,15 +56,17 @@ export default function TablaModelo(
         </thead>
         <tbody>
           {!items.length || !items ? (
-            <>No hay datos</>
+            <tr>
+              <th>No hay datos</th>
+            </tr>
           ) : (
             items.map((item, index) => {
               if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
                 return (
-                  <tr className="model_table border-b dark:model_table dark:border-gray-700">
-                    {Object.values(item).map((value) => {
+                  <tr key={index} className="model_table border-b dark:model_table dark:border-gray-700">
+                    {Object.values(item).map((value, i) => {
                       return (
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer">
+                        <th key={`${index}-${i}`} scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer">
                           {value}
                         </th>
                       )

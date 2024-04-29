@@ -1,6 +1,12 @@
+import TipoUsuarios from "./enum";
+
 export default function RoutePermisions() {
   return (
     {
+      "/": {
+        "typeUsers": ["*"],
+        "permisions": ["*"]
+      },
       "/pages/main": {
         "typeUsers": ["*"],
         "permisions": ["*"]
@@ -18,12 +24,12 @@ export default function RoutePermisions() {
         "permisions": ["*"]
       },
       "/pages/users": {
-        "typeUsers": ["*"],
+        "typeUsers": [TipoUsuarios.ADMINISTRADOR],
         "permisions": ["*"]
       },
       "/pages/users/create-users": {
-        "typeUsers": ["*"],
-        "permisions": ["*"]
+        "typeUsers": [TipoUsuarios.ADMINISTRADOR],
+        "permisions": ["1"]
       },
     }
   )

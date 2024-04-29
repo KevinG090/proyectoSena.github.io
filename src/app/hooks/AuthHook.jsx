@@ -28,6 +28,7 @@ export const UserInfoProvider = ({ children }) => {
   const allPermisions = RoutePermisions()
 
   const [userInfo, setUserInfo] = useState(initialUser);
+  const [loading] = useState("Cargando...");
 
   useEffect(() => {
     if (
@@ -38,7 +39,12 @@ export const UserInfoProvider = ({ children }) => {
       !(userInfo?.isSignedIn ?? false) &&
       localStorage.getItem("userLogin") == "false"
     ) router.push('/')
-    // else (router.push('/pages/main'))
+    else if (
+      (userInfo?.isSignedIn ?? false) == "true" &&
+      localStorage.getItem("userLogin") == "true" &&
+      path == "/"
+    ) router.push('/pages/main')
+
   }, [userInfo])
 
   const updateUserInfo = (updatedInfo) => {
@@ -81,19 +87,18 @@ export const UserInfoProvider = ({ children }) => {
   }
 
   useEffect(() => {
+
     if (!(Object.keys(allPermisions).includes(path)) || localStorage.getItem("userLogin") != "true") return
-    else if (allPermisions[path]["permisions"][0] == "*") return
+    else if (allPermisions[path]["permisions"][0] == "*" && allPermisions[path]["typeUsers"][0] == "*") return
 
     let validate = false
     for (permiso in userInfo?.userPermissions?.permisos ?? []) {
       if (allPermisions[path]["permisions"].includes(permiso)) validate = true
     }
 
-    if (
-      validate &&
-      allPermisions[path]["typeUsers"][0] != "*" &&
-      !(allPermisions[path]["typeUsers"].includes(userInfo?.roleInfo?.tipo_usuario))
-    ) validate = false
+    if (!validate && allPermisions[path]["typeUsers"][0] != "*" && (allPermisions[path]["typeUsers"].includes(userInfo?.roleInfo?.tipo_usuario))) {
+      validate = true
+    }
 
     if (!validate) {
       router.push('/pages/main')
@@ -114,18 +119,20 @@ export const UserInfoProvider = ({ children }) => {
   return (
     <infoContext.Provider value={{ userInfo, updateUserInfo, setInfoLogout, getInfo }}>
       {
-        ([{}, null, false].includes(userInfo?.userInfo?.id_usuario ?? false) && (userInfo?.isSignedIn ?? false)) ?
-          (
+        (typeof window !== "undefined") ? (
+          (!(userInfo?.isSignedIn ?? false) && (window.localStorage.getItem("userLogin")) == "true") ? (
             <div className="main_page login flex min-h-screen flex-col items-center justify-around p-20 sm:flex-row">
-              Cargando...
+              <p>{loading ?? ""}</p>
             </div>
-          ) :
-          (!userInfo?.isSignedIn ?? false) ? (
-            // <Home />
+          ) : ([{}, null, false].includes(userInfo?.userInfo?.id_usuario ?? false) && (userInfo?.isSignedIn ?? false)) ? (
             <div className="main_page login flex min-h-screen flex-col items-center justify-around p-20 sm:flex-row">
-              Cargando...
+              <p>{loading ?? ""}</p>
             </div>
-          ) : (children)
+          ) : (
+            (window.localStorage.getItem("userLogin")) == "false") ? (<Home />) : (children)
+        ) : (
+          <></>
+        )
       }
     </infoContext.Provider>
   );

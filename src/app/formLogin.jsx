@@ -54,7 +54,6 @@ export default function FormLogin() {
         },
         userPermissions: {
           permisos: data?.obj?.permisos ?? [],
-
         }
       });
       router.push('/pages/main')

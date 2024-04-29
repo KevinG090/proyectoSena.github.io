@@ -14,6 +14,7 @@ export default function Sidebar({ isSidebarOpen = false, showSidebar = () => { }
 
   const cerrarSesion = () => {
     setInfoLogout({ isSignedIn: false });
+    localStorage.getItem("userLogin") == "false"
   }
   const onChangeRoutes = (route: string) => {
     showSidebar()
