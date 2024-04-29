@@ -6,10 +6,16 @@ const ulrBaseApi = process.env.NEXT_PUBLIC_BK_BASE_FAST_API
 export const urlGetListCourses = () => {
     return `${ulrBaseApi}/cursos/listar-cursos`
 }
+export const urlCreateCourses = () => {
+    return `${ulrBaseApi}/cursos/crear-cursos`
+}
 
 // <<------- Eventos -------->>
 export const urlGetListEvents = () => {
     return `${ulrBaseApi}/eventos/listar-eventos`
+}
+export const urlCreateEvents = () => {
+    return `${ulrBaseApi}/eventos/crear-eventos`
 }
 
 // <<------- Usuarios -------->>

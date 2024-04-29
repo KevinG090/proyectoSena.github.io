@@ -9,6 +9,8 @@ import { urlCreateUsers } from "../../../utils/routes"
 import { notify, notifyError } from "../../../utils/notify"
 
 export default function page() {
+  const router = useRouter()
+
   const [newUser, setNewUser] = useState<any>({ "contraseña": "123456789" })
   const [loadingItems, setLoadingItems] = useState(false)
 
@@ -38,6 +40,7 @@ export default function page() {
       const { data }: any = await fetchPostRequest(url, newUser)
       notify(data?.msg ?? "Creacion Exitosa")
       setLoadingItems(false)
+      router.push("/pages/main")
 
     } catch (e: any) {
       let error = e.message ?? "Error en la creacion"
@@ -52,7 +55,7 @@ export default function page() {
     <FormModelo
       title={"Creacion de Usuarios"}
       onChange={onChange}
-      onSubmit={createUser}
+      onSubmit={createUser}      
     >
       <div className="flex flex-row items-center my-3 justify-around">
         <label htmlFor="userName" className="mx-2" >Nombre usaurio</label>
@@ -99,7 +102,7 @@ export default function page() {
         />
       </div>
       <div className="flex flex-row items-center my-3 justify-around">
-      <label htmlFor="tipoUsuario" className="mx-2">Tipo de usuarios</label>
+        <label htmlFor="tipoUsuario" className="mx-2">Tipo de usuarios</label>
         <select id="tipoUsuario" name="tipoUsuario" className="block w-60 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           <option selected value={TipoUsuarios.ADMINISTRADOR}>Administrador</option>
           <option value={TipoUsuarios.ESTUDIANTE}>Estudiante</option>

@@ -1,36 +1,44 @@
 'use client';
 
+import { useRouter } from 'next/navigation'
+import { useState, useEffect, useCallback, ReactNode } from "react";
+
 import Cursos from "@/app/components/Cursos";
 import TablaModelo from "@/app/components/TablaModelo";
-import { useState, useEffect, useCallback, ReactNode} from "react";
+
 import { fetchGetRequest } from "../../utils/fetch"
 import { urlGetListCourses } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
 
 export default function page() {
-
-
+  const router = useRouter()
 
   const [loadingItems, setLoadingItems] = useState(false)
   const [cursos, setCursos] = useState([])
   const [searchName, setSearchName] = useState<null | string>("")
   const [searchId, setSearchId] = useState<null | string>("")
+  const [page, setPage] = useState<number>(1)
+  const [limit, setLimit] = useState<any | number>(10)
+  const [nextPage, setNextPage] = useState(false)
 
   const getListCourses = useCallback(async () => {
     if (loadingItems) return
     try {
       let searchFilters: ReactNode[] | any = []
       let modifiedQueries = ""
-      
+
       if (![null, ""].includes(searchName)) searchFilters.push(["nombre_curso", searchName])
       if (![null, ""].includes(searchId)) searchFilters.push(["pk_id_curso", searchId])
+      if (![null, ""].includes(limit)) searchFilters.push(["limit", limit])
       if (searchFilters.length >= 1) { modifiedQueries = new URLSearchParams(searchFilters).toString() };
+      searchFilters.push(["page", page])
 
       const url = urlGetListCourses()
       setLoadingItems(true)
       const { data }: any = await fetchGetRequest(`${url}?${modifiedQueries}`)
       notify(data?.msg ?? "Consulta Exitosa")
       setCursos(data?.obj?.results ?? [])
+      setNextPage(data?.obj?.next_exist ?? false)
       setLoadingItems(false)
 
     } catch (e: any) {
@@ -39,7 +47,7 @@ export default function page() {
       setLoadingItems(false)
     }
   },
-    []
+    [searchName, searchId, limit, page]
   )
 
   useEffect(() => {
@@ -52,25 +60,29 @@ export default function page() {
     }
   }, [getListCourses])
 
+  const onChange = useCallback((ev: any, item: string = "") => {
+    try {
+      ev.preventDefault()
+      const formData = new FormData(ev.currentTarget.form);
+      const data = Object.fromEntries(Object.entries(Object.fromEntries(formData)))
+
+      if ("limit" == item && data?.limit != limit) setLimit(data?.limit)
+      if ("next" == item && nextPage) setPage((old) => old + 1)
+      if ("prev" == item && page != 1) setPage((old) => old - 1)
+
+    } catch (error) {
+      console.log(error)
+      notifyError("Error al modificar")
+    }
+  }, [])
 
   return (
-    <main className="main_page flex min-h-screen flex-col items-center">
-      {/* <div className="relative flex flex-row bg-backg-container-blue place-items-center rounded-inputs px-6 py-1 mb-4">
-        <h5 className="relative place-items-left text-xs">Cursos</h5>
-      </div> */}
-      {/* <div className="flex flex-col place-items-center justify-between w-52">
-        {(!loadingItems) ? (
-          cursos.map((val:any, index) => {
-            let items = val?.nombre_curso ?? "Curso General"
-            let fecha = val?.fecha ?? ""
-            let contenido = val?.contenido ?? "contenido del curso"
-            return <Cursos key={index} item={items} fecha={fecha} contenido={contenido} />
-          })
-        ) : (
-          "Cargando..."
-        )}
-
-      </div > */}
+    <div className="main_page flex min-h-screen flex-col items-center">
+      <button
+        className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+        onClick={() => router.push('/pages/cursos/create-cursos')}
+      >Creacion de cursos
+      </button>
       <TablaModelo
         title={"Tabla de Cursos"}
         description=""
@@ -89,6 +101,10 @@ export default function page() {
           descripcion: descripcion ?? "",
         }))}
         footer={[]}
+        onChangePageLimit={onChange}
+        onClickRow={onChange}
+        buttonNext={nextPage ? true : false}
+        buttonPrevious={page != 1 ? true : false}
       >
         <div className="flex flex-row items-center my-3">
           <label htmlFor="course_id" className="mx-2" >Id Curso</label>
@@ -113,7 +129,7 @@ export default function page() {
           />
         </div>
       </TablaModelo>
-    </main>
+    </div>
 
   );
 }

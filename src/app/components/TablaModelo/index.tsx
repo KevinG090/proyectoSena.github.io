@@ -13,10 +13,13 @@ type Entradas = {
   items: Record<string, any>[];
   onSubmit?: (ev: FormEvent<HTMLFormElement>) => void;
   onChange?: (ev: ChangeEvent<HTMLFormElement>) => void;
-  onClickRow?: (ev: MouseEvent<HTMLTableRowElement>, index: number) => void;
+  onClickRow?: (ev: MouseEvent<HTMLTableRowElement> | any, data: string) => void;
+  onChangePageLimit?: (ev: ChangeEvent<HTMLFormElement> | ChangeEvent<HTMLSelectElement>, data: string) => void;
   children?: ReactNode;
   headers: ReactNode[];
   footer: ReactNode;
+  buttonNext: boolean,
+  buttonPrevious: boolean,
   description: string | "";
 };
 
@@ -27,6 +30,10 @@ export default function TablaModelo(
     children,
     footer,
     headers,
+    onClickRow = (ev, data) => { },
+    onChangePageLimit = (ev, data) => { },
+    buttonNext = true,
+    buttonPrevious = true,
     description = "",
   }: Entradas
 ) {
@@ -57,7 +64,9 @@ export default function TablaModelo(
         <tbody>
           {!items.length || !items ? (
             <tr>
+              <th></th>
               <th>No hay datos</th>
+              <th></th>
             </tr>
           ) : (
             items.map((item, index) => {
@@ -79,93 +88,49 @@ export default function TablaModelo(
           )}
         </tbody>
       </table>
-      <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between bg-gray-50 dark:bg-gray-700" aria-label="Table navigation">
+      <form className="flex items-center flex-column flex-wrap md:flex-row justify-between bg-gray-50 dark:bg-gray-700" aria-label="Table formigation">
         <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 my-2 ml-5">
           <li>
-            <a href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 model_table border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:model_table dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+            <button
+              id="prev"
+              name="prev"
+              className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 model_table border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:model_table dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+              onClick={(ev) => { onClickRow(ev, "prev") }}
+              disabled={buttonPrevious}
+            >
+              Previous
+            </button>
           </li>
           <li>
-            <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 model_table border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:model_table dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+            <button
+              id="next"
+              name="next"
+              className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 model_table border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:model_table dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+              onClick={(ev) => { onClickRow(ev, "next") }}
+              disabled={buttonNext}
+            >
+              Next
+            </button>
           </li>
         </ul>
-        <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 my-2 mr-5">
-          <li>
-            <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 model_table border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:model_table dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">Limit</a>
+        <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 my-2">
+          <li className="flex flex-row items-center my-3 mx-3 justify-center">
+            <label htmlFor="limit" className="mx-2 text-gray-100 dark:model_table">Limit</label>
+            <select
+              id="limit"
+              name="limit"
+              className="block w-[4rem] p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:model_table dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={(ev) => { onChangePageLimit(ev, "limit") }}
+            >
+              <option selected value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
           </li>
         </ul>
-      </nav>
+      </form>
     </div>
 
   )
 }
 
-// <div className="relative overflow-x-auto sm:rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-800">
-// <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-//   <caption className="p-5 text-lg font-semibold text-center rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-//     {title}
-//     {/* <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p> */}
-//     <div className="mt-7">
-//       <label htmlFor="table-search" className="sr-only">Search</label>
-//       <div className="relative">
-//         <div className="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
-//           <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-//         </div>
-//         <input type="text" id="table-search" className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" />
-//       </div>
-//     </div>
-//   </caption>
-//   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-//     <tr>
-//       <th scope="col" className="px-6 py-3">
-//         Product name
-//       </th>
-//       <th scope="col" className="px-6 py-3">
-//         Color
-//       </th>
-//       <th scope="col" className="px-6 py-3">
-//         Category
-//       </th>
-//       <th scope="col" className="px-6 py-3">
-//         Price
-//       </th>
-//       <th scope="col" className="px-6 py-3">
-//         Action
-//       </th>
-//     </tr>
-//   </thead>
-//   <tbody>
-//     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-//       <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-//         Apple MacBook Pro 17"
-//       </th>
-//       <td className="px-6 py-4">
-//         Silver
-//       </td>
-//       <td className="px-6 py-4">
-//         Laptop
-//       </td>
-//       <td className="px-6 py-4">
-//         $2999
-//       </td>
-//       <td className="px-6 py-4">
-//         <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-//       </td>
-//     </tr>
-//   </tbody>
-// </table>
-// <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between" aria-label="Table navigation">
-//   <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 my-2 ml-5">
-//     <li>
-//       <a href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-//     </li>
-//     <li>
-//       <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-//     </li>
-//   </ul>
-//   <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 my-2 mr-5">
-//     <li>
-//       <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Limit</a>
-//     </li>
-//   </ul>
-// </nav>
-// </div>

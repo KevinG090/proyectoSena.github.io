@@ -14,6 +14,10 @@ export default function page() {
   const [usuarios, setUsuarios] = useState([])
   const [loadingItems, setLoadingItems] = useState(false)
 
+  const [page, setPage] = useState<number>(1)
+  const [limit, setLimit] = useState<any | number>(10)
+  const [nextPage, setNextPage] = useState(false)
+
   const getListUsers = useCallback(async () => {
 
     if (loadingItems) return
@@ -24,12 +28,15 @@ export default function page() {
 
       if (![null, ""].includes(searchName)) searchFilters.push(["nombre_usuario", searchName])
       if (![null, ""].includes(searchId)) searchFilters.push(["pk_id_usuario", searchId])
+      if (![null, ""].includes(limit)) searchFilters.push(["limit", limit])
       if (searchFilters.length >= 1) { modifiedQueries = new URLSearchParams(searchFilters).toString() };
+      searchFilters.push(["page", page])
 
       const url = urlGetListUsers()
       const { data }: any = await fetchGetRequest(`${url}?${modifiedQueries}`)
       notify(data?.msg ?? "Consulta Exitosa")
       setUsuarios(data?.obj?.results ?? [])
+      setNextPage(data?.obj?.next_exist ?? false)
       setLoadingItems(false)
 
     } catch (e: any) {
@@ -38,7 +45,7 @@ export default function page() {
       setLoadingItems(false)
     }
   },
-    [searchName,searchId]
+    [searchName,searchId,page,limit]
   )
 
   useEffect(() => {
@@ -50,6 +57,22 @@ export default function page() {
       clearTimeout(timeout)
     }
   }, [getListUsers])
+
+  const onChange = useCallback((ev: any, item: string = "") => {
+    try {
+      ev.preventDefault()
+      const formData = new FormData(ev.currentTarget.form);
+      const data = Object.fromEntries(Object.entries(Object.fromEntries(formData)))
+
+      if ("limit" == item && data?.limit != limit) setLimit(data?.limit)
+      if ("next" == item && nextPage) setPage((old) => old + 1)
+      if ("prev" == item && page != 1) setPage((old) => old - 1)
+
+    } catch (error) {
+      console.log(error)
+      notifyError("Error al modificar")
+    }
+  }, [])
 
   return (
     <div className="main_page flex min-h-screen flex-col items-center">
@@ -77,6 +100,10 @@ export default function page() {
           tipo_usuario: tipo_usuario ?? "",
         }))}
         footer={[]}
+        onChangePageLimit={onChange}
+        onClickRow={onChange}
+        buttonNext={nextPage ? true : false}
+        buttonPrevious={page != 1 ? true : false}
       >
         <div className="flex flex-row items-center my-3">
           <label htmlFor="user_id" className="mx-2" >Id usuario</label>
