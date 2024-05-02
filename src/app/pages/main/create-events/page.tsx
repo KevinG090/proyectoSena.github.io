@@ -40,7 +40,7 @@ export default function page() {
       setLoadingItems(false)
 
     } catch (e: any) {
-      let error = e.message ?? "Error en la creacion"
+      let error = e ?? "Error en la creacion"
       notifyError(error)
       setLoadingItems(false)
     }

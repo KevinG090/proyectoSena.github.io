@@ -60,7 +60,7 @@ export default function FormLogin() {
       
       
     } catch (e) {
-      let error = e.message ?? "Error en la consulta"
+      let error = e ?? "Error respuesta: (No se encontro el usuario)"
       notifyError(error)
       localStorage.setItem("userLogin", false);
       updateUserInfo({ isSignedIn: null});

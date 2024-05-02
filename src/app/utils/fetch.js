@@ -14,7 +14,7 @@ export const fetchGetRequest = async (url, params = {}) => {
         return response
     }
     catch (e) {
-        throw `Error al consultar ${e}`
+        throw e?.response?.data?.msg ?? `Error al consultar ${e}`
     }
 }
 
@@ -29,7 +29,6 @@ export const fetchPostRequest = async (url, body = {}) => {
         return response
     }
     catch (e) {
-        console.log(e)
-        throw `Error al consultar ${e}`
+        throw e?.response?.data?.msg ?? `Error en la peticion ${e}`
     }
 }

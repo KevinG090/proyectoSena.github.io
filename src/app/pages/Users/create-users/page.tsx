@@ -43,7 +43,7 @@ export default function page() {
       router.push("/pages/main")
 
     } catch (e: any) {
-      let error = e.message ?? "Error en la creacion"
+      let error = e ?? "Error en la creacion"
       notifyError(error)
       setLoadingItems(false)
     }
