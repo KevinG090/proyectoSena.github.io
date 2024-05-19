@@ -25,6 +25,12 @@ export const urlGetListUsers = () => {
 export const urlCreateUsers = () => {
     return `${ulrBaseApi}/users/crear-usuarios`
 }
+export const urlModifyUsers = () => {
+    return `${ulrBaseApi}/users/modificar-usuarios`
+}
+export const urlGetSpecifyUsers = () => {
+    return `${ulrBaseApi}/users/consultar-usuario-especifico`
+}
 
 // <<------- Materias -------->>
 export const urlGetListMaterias = () => {

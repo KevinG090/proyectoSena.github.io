@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback, ReactNode } from "react";
 
-import Cursos from "@/app/components/Cursos";
 import TablaModelo from "@/app/components/TablaModelo";
 
 import { fetchGetRequest } from "../../utils/fetch"
