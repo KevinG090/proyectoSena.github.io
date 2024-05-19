@@ -22,7 +22,6 @@ export default function page() {
       copyNewEvent["nombre_evento"] = data?.EventName ?? ""
       copyNewEvent["contenido"] = data?.contenido ?? ""
       setNewEvent(copyNewEvent)
-      router.push("/pages/main")
     } catch (error) {
       notifyError("Error al modificar")
     }

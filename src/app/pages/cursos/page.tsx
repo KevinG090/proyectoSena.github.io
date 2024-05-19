@@ -27,11 +27,11 @@ export default function page() {
       let searchFilters: ReactNode[] | any = []
       let modifiedQueries = ""
 
+      searchFilters.push(["page", page])
       if (![null, ""].includes(searchName)) searchFilters.push(["nombre_curso", searchName])
       if (![null, ""].includes(searchId)) searchFilters.push(["pk_id_curso", searchId])
       if (![null, ""].includes(limit)) searchFilters.push(["limit", limit])
       if (searchFilters.length >= 1) { modifiedQueries = new URLSearchParams(searchFilters).toString() };
-      searchFilters.push(["page", page])
 
       const url = urlGetListCourses()
       setLoadingItems(true)
@@ -74,7 +74,7 @@ export default function page() {
       console.log(error)
       notifyError("Error al modificar")
     }
-  }, [])
+  }, [limit, nextPage, page])
 
   return (
     <div className="main_page flex min-h-screen flex-col items-center">
@@ -103,11 +103,11 @@ export default function page() {
         footer={[]}
         onChangePageLimit={onChange}
         onClickRow={onChange}
-        buttonNext={nextPage ? true : false}
-        buttonPrevious={page != 1 ? true : false}
+        buttonNext={nextPage ? false : true}
+        buttonPrevious={page == 1 ? true : false}
       >
         <div className="flex flex-row items-center my-3">
-          <label htmlFor="course_id" className="mx-2" >Id Curso</label>
+          <label htmlFor="course_id" className="mx-2" >Id curso</label>
           <input
             type="number"
             id="course_id"

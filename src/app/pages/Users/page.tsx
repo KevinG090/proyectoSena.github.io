@@ -26,11 +26,11 @@ export default function page() {
       let searchFilters: ReactNode[] | any = []
       let modifiedQueries = ""
 
+      searchFilters.push(["page", page])
       if (![null, ""].includes(searchName)) searchFilters.push(["nombre_usuario", searchName])
       if (![null, ""].includes(searchId)) searchFilters.push(["pk_id_usuario", searchId])
       if (![null, ""].includes(limit)) searchFilters.push(["limit", limit])
       if (searchFilters.length >= 1) { modifiedQueries = new URLSearchParams(searchFilters).toString() };
-      searchFilters.push(["page", page])
 
       const url = urlGetListUsers()
       const { data }: any = await fetchGetRequest(`${url}?${modifiedQueries}`)
@@ -45,7 +45,7 @@ export default function page() {
       setLoadingItems(false)
     }
   },
-    [searchName,searchId,page,limit]
+    [searchName, searchId, page, limit]
   )
 
   useEffect(() => {
@@ -72,15 +72,15 @@ export default function page() {
       console.log(error)
       notifyError("Error al modificar")
     }
-  }, [])
+  }, [limit, nextPage, page])
 
   return (
     <div className="main_page flex min-h-screen flex-col items-center">
-        <button
-          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
-          onClick={() => router.push('/pages/users/create-users')}
-        >Creacion de usuarios
-        </button>
+      <button
+        className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+        onClick={() => router.push('/pages/users/create-users')}
+      >Creacion de usuarios
+      </button>
 
       <TablaModelo
         title={"Tabla de Usuarios"}
@@ -102,8 +102,8 @@ export default function page() {
         footer={[]}
         onChangePageLimit={onChange}
         onClickRow={onChange}
-        buttonNext={nextPage ? true : false}
-        buttonPrevious={page != 1 ? true : false}
+        buttonNext={nextPage ? false : true}
+        buttonPrevious={page == 1 ? true : false}
       >
         <div className="flex flex-row items-center my-3">
           <label htmlFor="user_id" className="mx-2" >Id usuario</label>
