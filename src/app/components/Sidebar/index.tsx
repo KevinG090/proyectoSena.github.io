@@ -71,7 +71,7 @@ export default function Sidebar({ isSidebarOpen = false, showSidebar = () => { }
       <button
         className="flex justify-center bg-backg-inputs-red rounded-inputs py-1 px-5 w-40 mt-auto"
         // className="absolute bg-backg-inputs-red rounded-inputs py-1 px-5 right-3 top-12 z-50"
-        onClick={() => onChangeRoutes(`/pages/users/${InfoUser?.userInfo?.id_usuario ?? "0"}/configuracion`)}
+        onClick={() => onChangeRoutes(`/pages/users/gestion?pk_id_usuario=${InfoUser?.userInfo?.id_usuario ?? "0"}`)}
       >Configuracion
       </button>
       <button

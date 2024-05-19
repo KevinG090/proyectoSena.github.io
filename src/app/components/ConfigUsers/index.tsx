@@ -51,7 +51,9 @@ export default function page({ id_usuario = null }: Entradas) {
       setCreateUsers(false)
       getInfoUser()
     }
-    // setCreateUsers(true)
+    else {
+      setCreateUsers(true)
+    }
   }, [id_usuario])
 
   const onChange = useCallback((ev: any) => {
@@ -131,8 +133,8 @@ export default function page({ id_usuario = null }: Entradas) {
       onChange={onChange}
       onSubmit={createUsers ? createUser : modifyUser}
     >
-      <div className="flex flex-row items-center my-3 justify-around">
-        <label htmlFor="nombre_usuario" className="mx-2" >Nombre usaurio</label>
+      <div className="flex flex-row items-center my-3 justify-evenly">
+        <label htmlFor="nombre_usuario" className="mx-2 w-40" >Nombre usuario</label>
         <input
           type="text"
           id="nombre_usuario"
@@ -142,8 +144,8 @@ export default function page({ id_usuario = null }: Entradas) {
           placeholder="Nombre completo"
         />
       </div>
-      <div className="flex flex-row items-center my-3 justify-around">
-        <label htmlFor="celular" className="mx-2" >Celular</label>
+      <div className="flex flex-row items-center my-3 justify-evenly">
+        <label htmlFor="celular" className="mx-2 w-40" >Celular</label>
         <input
           type="number"
           id="celular"
@@ -153,8 +155,8 @@ export default function page({ id_usuario = null }: Entradas) {
           placeholder="3333333333"
         />
       </div>
-      <div className="flex flex-row items-center my-3 justify-around">
-        <label htmlFor="correo" className="mx-2" >Correo</label>
+      <div className="flex flex-row items-center my-3 justify-evenly">
+        <label htmlFor="correo" className="mx-2 w-40" >Correo</label>
         <input
           type="email"
           id="correo"
@@ -165,8 +167,8 @@ export default function page({ id_usuario = null }: Entradas) {
           disabled={createUsers ? false : true}
         />
       </div>
-      <div className="flex flex-row items-center my-3 justify-around">
-        <label htmlFor="identificacion" className="mx-2" >Identificacion</label>
+      <div className="flex flex-row items-center my-3 justify-evenly">
+        <label htmlFor="identificacion" className="mx-2 w-40" >Identificacion</label>
         <input
           type="number"
           id="identificacion"
@@ -178,8 +180,8 @@ export default function page({ id_usuario = null }: Entradas) {
       </div>
       {!createUsers && (
         <>
-          <div className="flex flex-row items-center my-3 justify-around">
-            <label htmlFor="contra1" className="mx-2" >Contraseña 1</label>
+          <div className="flex flex-row items-center my-3 justify-evenly">
+            <label htmlFor="contra1" className="mx-2 w-40" >Contraseña 1</label>
             <input
               type="number"
               id="contra1"
@@ -189,8 +191,8 @@ export default function page({ id_usuario = null }: Entradas) {
               placeholder="******"
             />
           </div>
-          <div className="flex flex-row items-center my-3 justify-around">
-            <label htmlFor="contra2" className="mx-2" >Contraseña 2</label>
+          <div className="flex flex-row items-center my-3 justify-evenly">
+            <label htmlFor="contra2" className="mx-2 w-40" >Contraseña 2</label>
             <input
               type="number"
               id="contra2"
@@ -202,8 +204,8 @@ export default function page({ id_usuario = null }: Entradas) {
           </div>
         </>
       )}
-      <div className="flex flex-row items-center my-3 justify-around">
-        <label htmlFor="fk_id_tipo_usuario" className="mx-2">Tipo de usuarios</label>
+      <div className="flex flex-row items-center my-3 justify-evenly">
+        <label htmlFor="fk_id_tipo_usuario" className="mx-2 w-40">Tipo de usuarios</label>
         <select
           id="fk_id_tipo_usuario"
           name="fk_id_tipo_usuario"
@@ -215,11 +217,11 @@ export default function page({ id_usuario = null }: Entradas) {
           <option value={TipoUsuarios.PROFESOR}>Profesor</option>
         </select>
       </div>
-      <div className="flex flex-row items-center my-3 justify-between">
+      <div className="flex flex-row items-center my-3 justify-evenly">
         <button
-          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-80"
           type="submit"
-        >{(createUsers ? "Creacion" : "Modificacion") + "de Usuarios"}
+        >{(createUsers ? "Creacion" : "Modificacion") + " de Usuarios"}
         </button>
       </div>
 

@@ -35,7 +35,7 @@ export default function FormModelo(
           {title}
           <div className="mt-7">
             {children && (
-              <div className="relative">
+              <div className="flex justify-between flex-col relative">
                 {children}
               </div>
             )}

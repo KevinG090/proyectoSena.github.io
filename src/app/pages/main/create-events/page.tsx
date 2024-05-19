@@ -53,8 +53,8 @@ export default function page() {
       onChange={onChange}
       onSubmit={createUser}
     >
-      <div className="flex flex-row items-center my-3 justify-around">
-        <label htmlFor="EventName" className="mx-2" >Nombre</label>
+      <div className="flex flex-row items-center my-3 justify-evenly">
+        <label htmlFor="EventName" className="mx-2 w-40" >Nombre</label>
         <input
           type="text"
           id="EventName"
@@ -65,8 +65,8 @@ export default function page() {
         />
       </div>
 
-      <div className="flex flex-row items-center my-3 justify-around">
-        <label htmlFor="contenido" className="mx-2" >contenido</label>
+      <div className="flex flex-row items-center my-3 justify-evenly">
+        <label htmlFor="contenido" className="mx-2 w-40" >contenido</label>
         <input
           type="contenido"
           id="contenido"
@@ -78,9 +78,9 @@ export default function page() {
       </div>
 
 
-      <div className="flex flex-row items-center my-3 justify-between">
+      <div className="flex flex-row items-center my-3 justify-evenly">
         <button
-          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-80"
           type="submit"
         >
           Crear evento

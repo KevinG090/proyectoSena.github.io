@@ -106,7 +106,7 @@ export default function page() {
         buttonPrevious={page == 1 ? true : false}
       >
         <div className="flex flex-row items-center my-3">
-          <label htmlFor="course_id" className="mx-2" >Id curso</label>
+          <label htmlFor="course_id" className="mx-2 w-40" >Id curso</label>
           <input
             type="number"
             id="course_id"
@@ -117,7 +117,7 @@ export default function page() {
           />
         </div>
         <div className="flex flex-row items-center my-3">
-          <label htmlFor="course_name" className="mx-2" >Nombre</label>
+          <label htmlFor="course_name" className="mx-2 w-40" >Nombre</label>
           <input
             type="text"
             id="course_name"

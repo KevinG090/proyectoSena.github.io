@@ -54,8 +54,8 @@ export default function page() {
       onChange={onChange}
       onSubmit={createUser}
     >
-      <div className="flex flex-row items-center my-3 justify-around">
-        <label htmlFor="courseName" className="mx-2" >Nombre</label>
+      <div className="flex flex-row items-center my-3 justify-evenly">
+        <label htmlFor="courseName" className="mx-2 w-10" >Nombre</label>
         <input
           type="text"
           id="courseName"
@@ -66,8 +66,8 @@ export default function page() {
         />
       </div>
 
-      {/* <div className="flex flex-row items-center my-3 justify-around">
-        <label htmlFor="descripcion" className="mx-2" >descripcion</label>
+      {/* <div className="flex flex-row items-center my-3 justify-evenly">
+        <label htmlFor="descripcion" className="mx-2 w-40" >descripcion</label>
         <input
           type="descripcion"
           id="descripcion"
@@ -79,9 +79,9 @@ export default function page() {
       </div> */}
 
 
-      <div className="flex flex-row items-center my-3 justify-between">
+      <div className="flex flex-row items-center my-3 justify-evenly">
         <button
-          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-80"
           type="submit"
         >
           Crear curso
