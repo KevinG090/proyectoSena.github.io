@@ -1,4 +1,5 @@
 'use client';
+
 import TablaModelo from "@/app/components/TablaModelo";
 
 import { useRouter } from 'next/navigation'

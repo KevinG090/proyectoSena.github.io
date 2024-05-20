@@ -38,10 +38,18 @@ export default function Sidebar({ isSidebarOpen = false, showSidebar = () => { }
         priority
         onClick={() => onChangeRoutes('/pages/main')}
       />
+      <div className="py-1 px-5 mt-10 w-40"></div>
+      {[TipoUsuarios.ESTUDIANTE].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") && (
+        <button
+          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+          onClick={() => onChangeRoutes('/pages/notas')}
+        >Notas
+        </button>
+      )}
       <button
-        className="flex justify-center place-items-center text-center bg-backg-container-blue rounded-inputs py-1 px-5 mt-10 w-40"
-        onClick={() => onChangeRoutes('/pages/notas')}
-      >Notas
+        className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+        onClick={() => onChangeRoutes('/pages/materias')}
+      >Materias
       </button>
       {[TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") && (
         <button

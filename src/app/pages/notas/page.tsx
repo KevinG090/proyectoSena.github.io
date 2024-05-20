@@ -1,28 +1,59 @@
 'use client';
 
 import Notas from "@/app/components/Notas";
-import { useState, useEffect, useCallback, cache } from "react";
+import { useSearchParams } from 'next/navigation';
+
+import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
 import { fetchGetRequest } from "../../utils/fetch"
-import { urlGetListMaterias } from "../../utils/routes"
+import { urlGetListNotas } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
+import { infoContext } from "../../hooks/AuthHook";
+import TipoUsuarios from "../../utils/enum";
 
 export default function page() {
+  const routerParams = useSearchParams();
+  const pk_id_usuario = routerParams.get('pk_id_usuario');
+  const pk_id_materia = routerParams.get('pk_id_materia');
+  const pk_id_curso = routerParams.get('pk_id_curso');
+
+  const { getInfo } = useContext(infoContext);
+  const [InfoUser, setInfoUser] = useState<any | Object>({});
 
   const [materias, setMaterias] = useState([])
   const [loadingItems, setLoadingItems] = useState(false)
-  // const [materias, setMaterias] = useState([
-  //   {item:"materias 1", fecha : "2024-02-05", notas : [{val:1},{val:5},{val:4}]},
-  //   {item:"materias 2", fecha : "2024-01-02", notas : [{val:3},{val:4}]},
-  //   {item:"materias S", fecha : "2023-12-01", notas : [{val:0}]},
-  //   {item:"materias 4", fecha : "2023-11-05", notas : [{val:5}]},
-  // ])
 
+  useEffect(() => {
+    let res: any = getInfo()
+    setInfoUser(res ?? {})
+  }, [getInfo])
 
-  const getListCourses = useCallback(async () => {
-    if (loadingItems) return
+  const getListNotas = useCallback(async () => {
+    if (loadingItems || Object.keys(InfoUser).length === 0) return
     try {
-      const url = urlGetListMaterias()
       setLoadingItems(true)
+      let url = urlGetListNotas()
+      let searchFilters: ReactNode[] | any = []
+      let modifiedQueries = ""
+
+      if (
+        [TipoUsuarios.ESTUDIANTE].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") &&
+        ["", 0, null].includes(InfoUser?.userInfo?.id_usuario ?? "")
+      ) return
+      console.log("InfoUser",InfoUser)
+      console.log("InfoUser?.roleInfo?.tipo_usuario",InfoUser?.roleInfo?.tipo_usuario)
+      if ([TipoUsuarios.ESTUDIANTE].includes(InfoUser?.roleInfo?.tipo_usuario ?? "")) {
+        searchFilters.push(["pk_id_usuario", InfoUser?.userInfo?.id_usuario])
+      }
+      else {
+        if (pk_id_usuario) searchFilters.push(["pk_id_usuario", pk_id_usuario])
+        if (pk_id_curso) searchFilters.push(["pk_id_curso", pk_id_curso])
+        }
+      if (pk_id_materia) searchFilters.push(["pk_id_materia", pk_id_materia])
+      if (searchFilters.length >= 1) {
+        modifiedQueries = new URLSearchParams(searchFilters).toString()
+        url = `${url}?${modifiedQueries}`
+      };
+
       const { data }: any = await fetchGetRequest(url)
       notify(data?.msg ?? "Consulta Exitosa")
       setMaterias(data?.obj?.results ?? [])
@@ -34,12 +65,17 @@ export default function page() {
       setLoadingItems(false)
     }
   },
-    []
+    [
+      InfoUser,
+      pk_id_usuario,
+      pk_id_materia,
+      pk_id_curso,
+    ]
   )
 
   useEffect(() => {
-    getListCourses()
-  }, [getListCourses])
+    getListNotas()
+  }, [getListNotas])
 
   return (
     <main className="main_page flex min-h-screen flex-col items-center">
@@ -49,10 +85,17 @@ export default function page() {
       <div className="flex flex-col place-items-center justify-between w-52">
         {
           materias.map((val: any, index) => {
-            let items = val?.nombre_materia ?? "Materias General"
-            let fecha = val?.fecha ?? ""
-            let listaNotas = val?.notas ?? [{ val: 0 }]
-            return <Notas key={index} item={items} fecha={fecha} notas={listaNotas} />
+            let nombreMateria = (val?.nombre_materia ?? "Materias General").toUpperCase();
+            let nombreCurso = (val?.nombre_curso ?? "").toUpperCase();
+            let nombreUsuario = (val?.nombre_usuario ?? "").toUpperCase();
+            let listaNotas = val?.notas ?? [];
+            return <Notas
+              key={index}
+              nombreMateria={nombreMateria}
+              nombreCurso={nombreCurso}
+              nombreUsuario={nombreUsuario}
+              notas={listaNotas}
+            />
           })
         }
       </div >

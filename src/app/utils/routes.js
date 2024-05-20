@@ -44,3 +44,9 @@ export const urlLogin = () => {
 export const urlUser = () => {
     return `${ulrBaseApi}/login/user`
 }
+
+
+// <<------- Notas -------->>
+export const urlGetListNotas = () => {
+    return `${ulrBaseApi}/notas/listar-notas`
+}

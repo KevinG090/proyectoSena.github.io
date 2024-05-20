@@ -3,6 +3,7 @@ import React, {
   ChangeEvent,
   FormEvent,
   MouseEvent,
+  
   ReactNode,
   useMemo,
   useState,
@@ -14,6 +15,7 @@ type Entradas = {
   onSubmit?: (ev: FormEvent<HTMLFormElement>) => void;
   onChange?: (ev: ChangeEvent<HTMLFormElement>) => void;
   onClickRow?: (ev: MouseEvent<HTMLTableRowElement> | any, data: string) => void;
+  onClickItem?: (ev: MouseEvent<HTMLTableRowElement> | any, data: any) => void;
   onChangePageLimit?: (ev: ChangeEvent<HTMLFormElement> | ChangeEvent<HTMLSelectElement>, data: string) => void;
   children?: ReactNode;
   headers: ReactNode[];
@@ -32,6 +34,7 @@ export default function TablaModelo(
     headers,
     onClickRow = (ev, data) => { },
     onChangePageLimit = (ev, data) => { },
+    onClickItem = (ev, data) => { },
     buttonNext = true,
     buttonPrevious = true,
     description = "",
@@ -72,10 +75,14 @@ export default function TablaModelo(
             items.map((item, index) => {
               if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
                 return (
-                  <tr key={index} className="model_table border-b dark:model_table dark:border-gray-700">
+                  <tr 
+                    key={index}
+                    onClick={ev => onClickItem(ev,item)}
+                    className="model_table border-b dark:model_table dark:border-gray-700 cursor-pointer"
+                  >
                     {Object.values(item).map((value, i) => {
                       return (
-                        <th key={`${index}-${i}`} scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer">
+                        <th key={`${index}-${i}`} scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           {value}
                         </th>
                       )

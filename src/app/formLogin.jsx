@@ -48,6 +48,8 @@ export default function FormLogin() {
           nombre_tipo_usuario: data?.obj?.nombre_tipo_usuario ?? "",
           correo: data?.obj?.correo ?? "",
           identificacion: data?.obj?.identificacion ?? "",
+          nombre_curso: data?.obj?.nombre_curso ?? "",
+          pk_id_curso: data?.obj?.pk_id_curso ?? "",
         },
         roleInfo: {
           tipo_usuario: data?.obj?.pk_id_tipo_usuario ?? "",
