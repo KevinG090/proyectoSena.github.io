@@ -118,7 +118,9 @@ export const UserInfoProvider = ({ children }) => {
     updateUserInfo({ isSignedIn: false, userInfo: null });
     router.push('/')
   }
-  if (Object.keys(userInfo?.userInfo ?? {}).length < 1) {
+  if (typeof window !== "undefined" &&
+    Object.keys(userInfo?.userInfo ?? {}).length < 1 &&
+    (window.localStorage.getItem("userLogin")) != "false") {
     return <infoContext.Provider value={{ userInfo, updateUserInfo, setInfoLogout, getInfo }}>
       <div className="flex min-h-screen flex-col items-center justify-around p-20 sm:flex-row">
         <p>Cargando...</p>

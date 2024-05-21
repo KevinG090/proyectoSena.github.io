@@ -1,16 +1,20 @@
 'use client';
 
 import { useRouter } from 'next/navigation'
-import { useState, useEffect, useCallback, ReactNode } from "react";
+import { useState, useEffect, useCallback, ReactNode, useContext } from "react";
 
 import TablaModelo from "@/app/components/TablaModelo";
 
+import TipoUsuarios from "../../utils/enum";
 import { fetchGetRequest } from "../../utils/fetch"
 import { urlGetListCourses } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
+import { infoContext } from "../../hooks/AuthHook";
 
 export default function page() {
   const router = useRouter()
+  const { getInfo } = useContext(infoContext);
+  const [InfoUser, setInfoUser] = useState<any | Object>({});
 
   const [loadingItems, setLoadingItems] = useState(false)
   const [cursos, setCursos] = useState([])
@@ -19,6 +23,11 @@ export default function page() {
   const [page, setPage] = useState<number>(1)
   const [limit, setLimit] = useState<any | number>(10)
   const [nextPage, setNextPage] = useState(false)
+
+  useEffect(() => {
+    let res: any = getInfo()
+    setInfoUser(res ?? {})
+  }, [getInfo])
 
   const getListCourses = useCallback(async () => {
     if (loadingItems) return
@@ -75,6 +84,27 @@ export default function page() {
     }
   }, [limit, nextPage, page])
 
+  const onClickItems = useCallback((ev: any, item: any = {}) => {
+    try {
+      ev.preventDefault()
+
+      let searchFilters: ReactNode[] | any = []
+      let modifiedQueries = ""
+
+      if (
+        ![null, ""].includes(item?.pk_id_curso ?? "") &&
+        [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "")
+      ) searchFilters.push(["pk_id_curso", item?.pk_id_curso ?? ""])
+      if (searchFilters.length >= 1) { modifiedQueries = new URLSearchParams(searchFilters).toString() };
+
+      router.push(`/pages/cursos/search-students?${modifiedQueries}`)
+
+    } catch (error) {
+      console.log(error)
+      notifyError("Error al modificar")
+    }
+  }, [InfoUser])
+
   return (
     <div className="main_page flex min-h-screen flex-col items-center">
       <button
@@ -89,19 +119,24 @@ export default function page() {
           "Id del curso",
           "Nombre",
           "Descripcion",
+          "Editar",
         ]}
         items={cursos.map(({
           pk_id_curso,
           nombre_curso,
           descripcion,
+          editar,
         }) => ({
           pk_id_curso,
           nombre_curso: nombre_curso ?? "Curso General",
           descripcion: descripcion ?? "",
+          editar: editar ?? "editar"
         }))}
         footer={[]}
+        editItem={onChange}
         onChangePageLimit={onChange}
         onClickRow={onChange}
+        onClickItem={onClickItems}
         buttonNext={nextPage ? false : true}
         buttonPrevious={page == 1 ? true : false}
       >

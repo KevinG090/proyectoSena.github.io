@@ -3,7 +3,7 @@ import React, {
   ChangeEvent,
   FormEvent,
   MouseEvent,
-  
+
   ReactNode,
   useMemo,
   useState,
@@ -14,6 +14,7 @@ type Entradas = {
   items: Record<string, any>[];
   onSubmit?: (ev: FormEvent<HTMLFormElement>) => void;
   onChange?: (ev: ChangeEvent<HTMLFormElement>) => void;
+  editItem?: (ev: MouseEvent<HTMLTableRowElement> | any, data: any) => void;
   onClickRow?: (ev: MouseEvent<HTMLTableRowElement> | any, data: string) => void;
   onClickItem?: (ev: MouseEvent<HTMLTableRowElement> | any, data: any) => void;
   onChangePageLimit?: (ev: ChangeEvent<HTMLFormElement> | ChangeEvent<HTMLSelectElement>, data: string) => void;
@@ -32,6 +33,7 @@ export default function TablaModelo(
     children,
     footer,
     headers,
+    editItem = (ev, data) => { },
     onClickRow = (ev, data) => { },
     onChangePageLimit = (ev, data) => { },
     onClickItem = (ev, data) => { },
@@ -75,14 +77,28 @@ export default function TablaModelo(
             items.map((item, index) => {
               if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
                 return (
-                  <tr 
+                  <tr
                     key={index}
-                    onClick={ev => onClickItem(ev,item)}
                     className="model_table border-b dark:model_table dark:border-gray-700 cursor-pointer"
                   >
                     {Object.values(item).map((value, i) => {
+                      if (i > (headers.length - 1)) return
+                      if (value == "editar") {
+                        return <th
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:bg-gray-700"
+                          onClick={ev => editItem(ev, item)}
+                        >
+                          Editar
+                        </th>
+                      }
+
                       return (
-                        <th key={`${index}-${i}`} scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th
+                          key={`${index}-${i}`}
+                          scope="row"
+                          onClick={ev => onClickItem(ev, item)}
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
                           {value}
                         </th>
                       )
