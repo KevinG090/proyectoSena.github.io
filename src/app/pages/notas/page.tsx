@@ -1,6 +1,7 @@
 'use client';
 
 import Notas from "@/app/components/Notas";
+import Modal from "@/app/components/Modal";
 import { useSearchParams } from 'next/navigation';
 
 import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
@@ -21,6 +22,10 @@ export default function page() {
 
   const [materias, setMaterias] = useState([])
   const [loadingItems, setLoadingItems] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [crearNota, setCrearNota] = useState(false)
+
+  const [newNota, setNewNota] = useState("")
 
   useEffect(() => {
     let res: any = getInfo()
@@ -39,15 +44,15 @@ export default function page() {
         [TipoUsuarios.ESTUDIANTE].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") &&
         ["", 0, null].includes(InfoUser?.userInfo?.id_usuario ?? "")
       ) return
-      console.log("InfoUser",InfoUser)
-      console.log("InfoUser?.roleInfo?.tipo_usuario",InfoUser?.roleInfo?.tipo_usuario)
+      console.log("InfoUser", InfoUser)
+      console.log("InfoUser?.roleInfo?.tipo_usuario", InfoUser?.roleInfo?.tipo_usuario)
       if ([TipoUsuarios.ESTUDIANTE].includes(InfoUser?.roleInfo?.tipo_usuario ?? "")) {
         searchFilters.push(["pk_id_usuario", InfoUser?.userInfo?.id_usuario])
       }
       else {
         if (pk_id_usuario) searchFilters.push(["pk_id_usuario", pk_id_usuario])
         if (pk_id_curso) searchFilters.push(["pk_id_curso", pk_id_curso])
-        }
+      }
       if (pk_id_materia) searchFilters.push(["pk_id_materia", pk_id_materia])
       if (searchFilters.length >= 1) {
         modifiedQueries = new URLSearchParams(searchFilters).toString()
@@ -77,8 +82,57 @@ export default function page() {
     getListNotas()
   }, [getListNotas])
 
+  const onClickButtons = useCallback((ev: any, item: any = {}) => {
+    try {
+      ev.preventDefault()
+      if ("crear" === item) setCrearNota(true)
+      else { setCrearNota(false) }
+      setShowModal(true)
+    } catch (error) {
+      console.log(error)
+      notifyError("Error al modificar")
+    }
+  }, [InfoUser])
+
+  const createNota = useCallback(async (ev: any) => {
+    ev.preventDefault()
+
+    try {
+      setLoadingItems(true)
+      // const url = urlCreateCourses()
+      // const { data }: any = await fetchPostRequest(url, newCourse)
+      // notify(data?.msg ?? "Creacion Exitosa")
+      setLoadingItems(false)
+
+    } catch (e: any) {
+      let error = e ?? "Error en la creacion"
+      notifyError(error)
+      setLoadingItems(false)
+    }
+  },
+    []
+  )
+
+  const editNota = useCallback(async (ev: any) => {
+    ev.preventDefault()
+
+    try {
+      setLoadingItems(true)
+      // const url = urlCreateCourses()
+      // const { data }: any = await fetchPostRequest(url, newCourse)
+      // notify(data?.msg ?? "Creacion Exitosa")
+      setLoadingItems(false)
+
+    } catch (e: any) {
+      let error = e ?? "Error en la creacion"
+      notifyError(error)
+      setLoadingItems(false)
+    }
+  },
+    []
+  )
   return (
-    <main className="main_page flex min-h-screen flex-col items-center">
+    <div className="main_page flex min-h-screen flex-col items-center">
       <div className="relative flex flex-row bg-backg-container-blue place-items-center rounded-inputs px-6 py-1 mb-4">
         <h5 className="relative place-items-left text-xs">Notas Materias</h5>
       </div>
@@ -95,10 +149,38 @@ export default function page() {
               nombreCurso={nombreCurso}
               nombreUsuario={nombreUsuario}
               notas={listaNotas}
+              onClickButton={onClickButtons}
             />
           })
         }
       </div >
-    </main>
+      <Modal
+        showModal={showModal}
+        closeModal={() => { setShowModal(false) }}
+      >
+        <form
+          onSubmit={crearNota ? createNota : editNota}
+        >
+          {crearNota ? (
+            <div>
+              <div className="flex flex-row items-center my-3">
+                <label htmlFor="new_nota" className="mx-2 w-40" >Nota</label>
+                <input
+                  type="cel"
+                  id="new_nota"
+                  name="new_nota"
+                  className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="5"
+                  onChange={(ev) => { setNewNota(ev.target.value) }}
+                />
+              </div>
+            </div>
+          ) :
+            <div></div>
+          }
+          <button >{crearNota ? "crear" : "editar"}</button>
+        </form>
+      </Modal>
+    </div>
   );
 }

@@ -13,7 +13,8 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   --background-table-rgb: rgb(66 85 113);
-  --border-radius-input: 20px
+  --border-radius-input: 20px;
+  --backdrop-filter-modal:blur(5px)
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -52,6 +53,9 @@ body {
   background-repeat: no-repeat;
   background-size: 300px 600px;
   background-position: bottom right;
+}
+.custom_modal {
+  backdrop-filter: var(--backdrop-filter-modal);
 }
 /* input {
   background : var(--backg-inputs);
