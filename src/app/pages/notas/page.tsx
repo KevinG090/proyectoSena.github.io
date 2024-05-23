@@ -5,8 +5,8 @@ import Modal from "@/app/components/Modal";
 import { useSearchParams } from 'next/navigation';
 
 import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
-import { fetchGetRequest } from "../../utils/fetch"
-import { urlGetListNotas } from "../../utils/routes"
+import { fetchGetRequest,fetchPostRequest } from "../../utils/fetch"
+import { urlGetListNotas, urlCreateNotas } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
 import { infoContext } from "../../hooks/AuthHook";
 import TipoUsuarios from "../../utils/enum";
@@ -25,7 +25,7 @@ export default function page() {
   const [showModal, setShowModal] = useState(false)
   const [crearNota, setCrearNota] = useState(false)
 
-  const [newNota, setNewNota] = useState("")
+  const [newNota, setNewNota] = useState<any | Object>({})
 
   useEffect(() => {
     let res: any = getInfo()
@@ -82,10 +82,17 @@ export default function page() {
     getListNotas()
   }, [getListNotas])
 
-  const onClickButtons = useCallback((ev: any, item: any = {}) => {
+  const onClickButtons = useCallback((ev: any, item: any = {}, data:any = {}) => {
     try {
       ev.preventDefault()
-      if ("crear" === item) setCrearNota(true)
+      console.log(item,data)
+      if ("crear" === item) {
+        setCrearNota(true)
+        let copyNewNota = {...newNota}
+        copyNewNota["fk_relacion_usuario_curso"] = data?.fk_relacion_usuario_curso ?? ""
+        copyNewNota["fk_relacion_curso_materia"] = data?.fk_relacion_curso_materia ?? ""
+        setNewNota(copyNewNota)
+      }
       else { setCrearNota(false) }
       setShowModal(true)
     } catch (error) {
@@ -99,9 +106,9 @@ export default function page() {
 
     try {
       setLoadingItems(true)
-      // const url = urlCreateCourses()
-      // const { data }: any = await fetchPostRequest(url, newCourse)
-      // notify(data?.msg ?? "Creacion Exitosa")
+      const url = urlCreateNotas()
+      const { data }: any = await fetchPostRequest(url, newNota)
+      notify(data?.msg ?? "Creacion Exitosa")
       setLoadingItems(false)
 
     } catch (e: any) {
@@ -110,7 +117,7 @@ export default function page() {
       setLoadingItems(false)
     }
   },
-    []
+    [newNota]
   )
 
   const editNota = useCallback(async (ev: any) => {
@@ -145,6 +152,7 @@ export default function page() {
             let listaNotas = val?.notas ?? [];
             return <Notas
               key={index}
+              data={val}
               nombreMateria={nombreMateria}
               nombreCurso={nombreCurso}
               nombreUsuario={nombreUsuario}
@@ -160,6 +168,7 @@ export default function page() {
       >
         <form
           onSubmit={crearNota ? createNota : editNota}
+          className="flex justify-center flex-col items-center my-3"
         >
           {crearNota ? (
             <div>
@@ -170,15 +179,23 @@ export default function page() {
                   id="new_nota"
                   name="new_nota"
                   className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="5"
-                  onChange={(ev) => { setNewNota(ev.target.value) }}
+                  placeholder="Valor de la nueva nota"
+                  onChange={(ev) => {
+                    let copyNewNota = {...newNota}
+                    copyNewNota["nota"] = ev.target.value
+                    setNewNota(copyNewNota)
+                  }}
                 />
               </div>
             </div>
           ) :
             <div></div>
           }
-          <button >{crearNota ? "crear" : "editar"}</button>
+          <button
+            className="flex justify-center bg-backg-container-gray rounded-inputs my-3 py-1 px-5 w-40"
+          >
+            {crearNota ? "crear" : "editar"}
+          </button>
         </form>
       </Modal>
     </div>

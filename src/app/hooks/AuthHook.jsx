@@ -89,6 +89,7 @@ export const UserInfoProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    if (Object.keys(userInfo?.userInfo ?? {}).length < 1) return
 
     if (!(Object.keys(allPermisions).includes(path)) || localStorage.getItem("userLogin") != "true") return
     else if (allPermisions[path]["permisions"][0] == "*" && allPermisions[path]["typeUsers"][0] == "*") return
@@ -116,6 +117,13 @@ export const UserInfoProvider = ({ children }) => {
     localStorage.setItem("id_usuario", null);
     updateUserInfo({ isSignedIn: false, userInfo: null });
     router.push('/')
+  }
+  if (Object.keys(userInfo?.userInfo ?? {}).length < 1) {
+    return <infoContext.Provider value={{ userInfo, updateUserInfo, setInfoLogout, getInfo }}>
+      <div className="flex min-h-screen flex-col items-center justify-around p-20 sm:flex-row">
+        <p>Cargando...</p>
+      </div>
+    </infoContext.Provider>
   }
 
   return (

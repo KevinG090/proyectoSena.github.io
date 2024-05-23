@@ -76,7 +76,7 @@ export default function page() {
   }, [limit, nextPage, page])
 
   return (
-    <div className="main_page flex min-h-screen flex-col items-center">
+    <div className="flex min-h-screen flex-col items-center">
       <button
         className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
         onClick={() => router.push('/pages/users/create-users')}
@@ -107,7 +107,7 @@ export default function page() {
         buttonPrevious={page == 1 ? true : false}
       >
         <div className="flex flex-row items-center my-3">
-          <label htmlFor="user_id" className="mx-2" >Id usuario</label>
+          <label htmlFor="user_id" className="mx-2 w-40">Id usuario</label>
           <input
             type="number"
             id="user_id"
@@ -118,7 +118,7 @@ export default function page() {
           />
         </div>
         <div className="flex flex-row items-center my-3">
-          <label htmlFor="user_name" className="mx-2" >Nombre</label>
+          <label htmlFor="user_name" className="mx-2 w-40" >Nombre</label>
           <input
             type="text"
             id="user_name"

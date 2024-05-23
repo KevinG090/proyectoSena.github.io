@@ -7,12 +7,14 @@ import { useState, useEffect, useCallback, cache, ReactNode } from "react";
 import { fetchPostRequest, fetchGetRequest, fetchPutRequest } from "../../utils/fetch"
 import { urlCreateUsers, urlGetSpecifyUsers, urlModifyUsers } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
+import ChangePass from "@/app/components/ConfigUsers/ChangePass"
 
 type Entradas = {
   id_usuario: any | string | "";
+  only_pass: any | boolean;
 };
 
-export default function page({ id_usuario = null }: Entradas) {
+export default function page({ id_usuario = null, only_pass = false }: Entradas) {
   const router = useRouter()
 
   const [newUser, setNewUser] = useState<any>({ "contraseña": "123456789" })
@@ -62,13 +64,13 @@ export default function page({ id_usuario = null }: Entradas) {
       const data = Object.fromEntries(Object.entries(Object.fromEntries(formData)))
 
       let copyNewUSer = { ...newUser }
-      if ("nombre_usuario" in data) {copyNewUSer["nombre_usuario"] = data?.nombre_usuario ?? ""}
-      if ("celular" in data) {copyNewUSer["celular"] = data?.celular ?? ""}
-      if ("identificacion" in data) {copyNewUSer["identificacion"] = data?.identificacion ?? ""}
-      if ("fk_id_tipo_usuario" in data) {copyNewUSer["fk_id_tipo_usuario"] = data?.fk_id_tipo_usuario ?? ""}
-      if ("correo" in data && createUsers) {copyNewUSer["correo"] = data?.correo ?? ""}
+      if ("nombre_usuario" in data) { copyNewUSer["nombre_usuario"] = data?.nombre_usuario ?? "" }
+      if ("celular" in data) { copyNewUSer["celular"] = data?.celular ?? "" }
+      if ("identificacion" in data) { copyNewUSer["identificacion"] = data?.identificacion ?? "" }
+      if ("fk_id_tipo_usuario" in data) { copyNewUSer["fk_id_tipo_usuario"] = data?.fk_id_tipo_usuario ?? "" }
+      if ("correo" in data && createUsers) { copyNewUSer["correo"] = data?.correo ?? "" }
 
-      setNewUser((prevUser:any) => ({ ...prevUser, ...copyNewUSer }));
+      setNewUser((prevUser: any) => ({ ...prevUser, ...copyNewUSer }));
       setListPasswords([data?.contra1 ?? listPasswords[0], data?.contra2 ?? listPasswords[1]])
     } catch (error) {
       notifyError("Error al modificar")
@@ -101,16 +103,19 @@ export default function page({ id_usuario = null }: Entradas) {
 
     try {
       setLoadingItems(true)
-      if (["", 0, null].includes(listPasswords[0])) {
-        notifyError("Contraseña incorrecta")
-        return false
-      }
-      if (listPasswords[0] != listPasswords[1]) {
-        notifyError("Contraseñas no coinciden")
-        return false  
-      }
       let copyNewUSer = { ...newUser }
-      copyNewUSer["contraseña"] = listPasswords[0]
+      if (!only_pass) {
+        if (["", 0, null].includes(listPasswords[0])) {
+          notifyError("Contraseña incorrecta")
+          return false
+        }
+        if (listPasswords[0] != listPasswords[1]) {
+          notifyError("Contraseñas no coinciden")
+          return false
+        }
+        copyNewUSer["contraseña"] = listPasswords[0]
+      }
+      else if ("contraseña" in copyNewUSer) { copyNewUSer["contraseña"] = null }
 
       const url = urlModifyUsers()
       const { data }: any = await fetchPutRequest(`${url}?pk_id_usuario=${id_usuario}`, copyNewUSer)
@@ -124,7 +129,7 @@ export default function page({ id_usuario = null }: Entradas) {
       setLoadingItems(false)
     }
   },
-    [newUser, id_usuario]
+    [newUser, id_usuario, only_pass]
   )
 
   return (
@@ -178,31 +183,8 @@ export default function page({ id_usuario = null }: Entradas) {
           placeholder="4444444444"
         />
       </div>
-      {!createUsers && (
-        <>
-          <div className="flex flex-row items-center my-3 justify-evenly">
-            <label htmlFor="contra1" className="mx-2 w-40" >Contraseña 1</label>
-            <input
-              type="number"
-              id="contra1"
-              name="contra1"
-              value={listPasswords[0] ?? ""}
-              className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="******"
-            />
-          </div>
-          <div className="flex flex-row items-center my-3 justify-evenly">
-            <label htmlFor="contra2" className="mx-2 w-40" >Contraseña 2</label>
-            <input
-              type="number"
-              id="contra2"
-              name="contra2"
-              value={listPasswords[1] ?? ""}
-              className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="******"
-            />
-          </div>
-        </>
+      {(!createUsers && !only_pass) && (
+        <ChangePass listPasswords={listPasswords} />
       )}
       <div className="flex flex-row items-center my-3 justify-evenly">
         <label htmlFor="fk_id_tipo_usuario" className="mx-2 w-40">Tipo de usuarios</label>

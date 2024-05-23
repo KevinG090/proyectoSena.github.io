@@ -47,6 +47,9 @@ export const urlUser = () => {
 
 
 // <<------- Notas -------->>
+export const urlCreateNotas = () => {
+    return `${ulrBaseApi}/notas/crear-notas`
+}
 export const urlGetListNotas = () => {
     return `${ulrBaseApi}/notas/listar-notas`
 }
