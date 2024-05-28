@@ -15,6 +15,7 @@ type Entradas = {
   onSubmit?: (ev: FormEvent<HTMLFormElement>) => void;
   onChange?: (ev: ChangeEvent<HTMLFormElement>) => void;
   editItem?: (ev: MouseEvent<HTMLTableRowElement> | any, data: any) => void;
+  asignarItem?: (ev: MouseEvent<HTMLTableRowElement> | any, data: any) => void;
   onClickRow?: (ev: MouseEvent<HTMLTableRowElement> | any, data: string) => void;
   onClickItem?: (ev: MouseEvent<HTMLTableRowElement> | any, data: any) => void;
   onChangePageLimit?: (ev: ChangeEvent<HTMLFormElement> | ChangeEvent<HTMLSelectElement>, data: string) => void;
@@ -34,6 +35,7 @@ export default function TablaModelo(
     footer,
     headers,
     editItem = (ev, data) => { },
+    asignarItem = (ev, data) => { },
     onClickRow = (ev, data) => { },
     onChangePageLimit = (ev, data) => { },
     onClickItem = (ev, data) => { },
@@ -89,6 +91,15 @@ export default function TablaModelo(
                           onClick={ev => editItem(ev, item)}
                         >
                           Editar
+                        </th>
+                      }
+
+                      if (value == "asignar") {
+                        return <th
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:bg-gray-700"
+                          onClick={ev => asignarItem(ev, item)}
+                        >
+                          Asignar
                         </th>
                       }
 

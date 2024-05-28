@@ -9,6 +9,9 @@ export const urlGetListCourses = () => {
 export const urlCreateCourses = () => {
     return `${ulrBaseApi}/cursos/crear-cursos`
 }
+export const urlEditCourses = () => {
+    return `${ulrBaseApi}/cursos/modificar-cursos`
+}
 
 // <<------- Eventos -------->>
 export const urlGetListEvents = () => {
