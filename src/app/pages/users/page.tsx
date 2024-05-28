@@ -75,6 +75,15 @@ export default function page() {
     }
   }, [limit, nextPage, page])
 
+  const asignarCursos = useCallback((ev: any, item: any = {}) => {
+    try {
+      ev.preventDefault()
+      router.push(`/pages/users/asignar-cursos?pk_id_usuario=${item.pk_id_usuario}`)
+    } catch (error) {
+      notifyError("Error al seleccionar curso")
+    }
+  }, [])
+
   return (
     <div className="flex min-h-screen flex-col items-center">
       <button
@@ -90,18 +99,25 @@ export default function page() {
           "Id de usuario",
           "Nombre",
           "Tipo de usuario",
+          "Editar",
+          "Asignar Curso",
         ]}
         items={usuarios.map(({
           pk_id_usuario,
           nombre_usuario,
           tipo_usuario,
+          editar,
+          asignar,
         }) => ({
           pk_id_usuario,
           nombre_usuario: nombre_usuario ?? "",
           tipo_usuario: tipo_usuario ?? "",
+          editar: editar ?? "editar",
+          asignar: "estudiante" == tipo_usuario && "asignar",
         }))}
         footer={[]}
         onChangePageLimit={onChange}
+        asignarItem = {asignarCursos}
         onClickRow={onChange}
         buttonNext={nextPage ? false : true}
         buttonPrevious={page == 1 ? true : false}

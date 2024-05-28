@@ -35,6 +35,10 @@ export const urlGetSpecifyUsers = () => {
     return `${ulrBaseApi}/users/consultar-usuario-especifico`
 }
 
+export const urlAsignarCursos = () => {
+    return `${ulrBaseApi}/users/asignar-usuarios-cursos`
+}
+
 // <<------- Materias -------->>
 export const urlGetListMateriasCursos = () => {
     return `${ulrBaseApi}/materias/listar-materias-cursos`
