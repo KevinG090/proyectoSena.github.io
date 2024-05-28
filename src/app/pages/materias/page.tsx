@@ -6,7 +6,7 @@ import Modal from "@/app/components/Modal";
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
 import { fetchGetRequest,fetchPutRequest } from "../../utils/fetch"
-import { urlGetListMaterias,urlEditMaterias } from "../../utils/routes"
+import { urlGetListMateriasCursos,urlEditMaterias } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
 import { infoContext } from "../../hooks/AuthHook";
 import TipoUsuarios from "../../utils/enum";
@@ -65,7 +65,7 @@ export default function page() {
             if (![null, ""].includes(limit)) searchFilters.push(["limit", limit])
             if (searchFilters.length >= 1) { modifiedQueries = new URLSearchParams(searchFilters).toString() };
 
-            const url = urlGetListMaterias()
+            const url = urlGetListMateriasCursos()
             const { data }: any = await fetchGetRequest(`${url}?${modifiedQueries}`)
             notify(data?.msg ?? "Consulta Exitosa")
             setMaterias(data?.obj?.results ?? [])

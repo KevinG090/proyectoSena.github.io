@@ -138,6 +138,15 @@ export default function page() {
     }
   }, [InfoUser])
 
+  const asignarMaterias = useCallback((ev: any, item: any = {}) => {
+    try {
+      ev.preventDefault()
+      router.push(`/pages/cursos/asignar-materias?pk_id_curso=${item.pk_id_curso}`)
+    } catch (error) {
+      notifyError("Error al seleccionar curso")
+    }
+  }, [])
+
   return (
     <div className="main_page flex min-h-screen flex-col items-center">
       <button
@@ -173,6 +182,7 @@ export default function page() {
         onChangePageLimit={onChange}
         onClickRow={onChange}
         onClickItem={onClickItems}
+        asignarItem = {asignarMaterias}
         buttonNext={nextPage ? false : true}
         buttonPrevious={page == 1 ? true : false}
       >

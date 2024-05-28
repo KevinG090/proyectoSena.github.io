@@ -9,7 +9,7 @@ import TablaModelo from "@/app/components/TablaModelo";
 import { useSearchParams } from 'next/navigation';
 import { infoContext } from "../../../hooks/AuthHook";
 import { fetchGetRequest, fetchPostRequest } from "../../../utils/fetch"
-import { urlGetListUsers, urlCreateNotas, urlGetListMaterias } from "../../../utils/routes"
+import { urlGetListUsers, urlCreateNotas, urlGetListMateriasCursos } from "../../../utils/routes"
 import { notify, notifyError } from "../../../utils/notify"
 
 export default function page({ params }: { params: { id: string } }) {
@@ -99,7 +99,7 @@ export default function page({ params }: { params: { id: string } }) {
             if (![null, ""].includes(limit)) searchFilters.push(["limit", limit])
             if (searchFilters.length >= 1) { modifiedQueries = new URLSearchParams(searchFilters).toString() };
 
-            const url = urlGetListMaterias()
+            const url = urlGetListMateriasCursos()
             const { data }: any = await fetchGetRequest(`${url}?${modifiedQueries}`)
             if ((data?.obj?.results ?? []).length < 1 ){
                 notify(`No se encontraron materias con el comercio ${pk_id_curso}`)

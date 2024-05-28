@@ -36,6 +36,9 @@ export const urlGetSpecifyUsers = () => {
 }
 
 // <<------- Materias -------->>
+export const urlGetListMateriasCursos = () => {
+    return `${ulrBaseApi}/materias/listar-materias-cursos`
+}
 export const urlGetListMaterias = () => {
     return `${ulrBaseApi}/materias/listar-materias`
 }
@@ -44,6 +47,10 @@ export const urlCreateMaterias = () => {
 }
 export const urlEditMaterias = () => {
     return `${ulrBaseApi}/materias/modificar-materias`
+}
+
+export const urlAsignarMaterias = () => {
+    return `${ulrBaseApi}/materias/asignar-curso-materias`
 }
 
 // <<------- login -------->>
