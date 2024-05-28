@@ -39,6 +39,12 @@ export const urlGetSpecifyUsers = () => {
 export const urlGetListMaterias = () => {
     return `${ulrBaseApi}/materias/listar-materias`
 }
+export const urlCreateMaterias = () => {
+    return `${ulrBaseApi}/materias/crear-materias`
+}
+export const urlEditMaterias = () => {
+    return `${ulrBaseApi}/materias/modificar-materias`
+}
 
 // <<------- login -------->>
 export const urlLogin = () => {

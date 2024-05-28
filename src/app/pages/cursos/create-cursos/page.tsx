@@ -16,13 +16,13 @@ export default function page() {
 
   const onChange = useCallback((ev: any) => {
     try {
+      ev.preventDefault()
       const formData = new FormData(ev.currentTarget);
       const data = Object.fromEntries(Object.entries(Object.fromEntries(formData)))
       let copyNewCourse = { ...newCourse }
       copyNewCourse["nombre_curso"] = data?.courseName ?? ""
       // copyNewCourse["descripcion"] = data?.descripcion ?? ""
       setNewCourse(copyNewCourse)
-      router.push("/pages/main")
     } catch (error) {
       notifyError("Error al modificar")
     }
@@ -38,6 +38,8 @@ export default function page() {
       const { data }: any = await fetchPostRequest(url, newCourse)
       notify(data?.msg ?? "Creacion Exitosa")
       setLoadingItems(false)
+
+      router.push("/pages/cursos")
 
     } catch (e: any) {
       let error = e ?? "Error en la creacion"

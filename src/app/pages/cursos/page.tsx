@@ -115,7 +115,7 @@ export default function page() {
     } catch (error) {
       notifyError("Error al seleccionar curso")
     }
-  }, [limit, nextPage, page])
+  }, [])
 
   const onClickItems = useCallback((ev: any, item: any = {}) => {
     try {
@@ -209,7 +209,7 @@ export default function page() {
         >
 
           <div className="flex flex-row items-center my-3">
-            <label htmlFor="id" className="mx-2 w-40" >Nota</label>
+            <label htmlFor="id" className="mx-2 w-40" >Id curso</label>
             <input
               type="cel"
               id="id"

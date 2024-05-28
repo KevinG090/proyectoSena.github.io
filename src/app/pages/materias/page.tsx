@@ -1,10 +1,12 @@
 'use client';
 
 import TablaModelo from "@/app/components/TablaModelo";
+import Modal from "@/app/components/Modal";
+
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
-import { fetchGetRequest } from "../../utils/fetch"
-import { urlGetListMaterias } from "../../utils/routes"
+import { fetchGetRequest,fetchPutRequest } from "../../utils/fetch"
+import { urlGetListMaterias,urlEditMaterias } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
 import { infoContext } from "../../hooks/AuthHook";
 import TipoUsuarios from "../../utils/enum";
@@ -21,6 +23,8 @@ export default function page() {
     const [searchIdCourse, setSearchIdCourse] = useState<null | any | string>("")
     const [searchNameMaterias, setSearchNameMaterias] = useState<null | string>("")
     const [searchIdMaterias, setSearchIdMaterias] = useState<null | string>("")
+
+    const [selectMateria, setSelectMateria] = useState<any>({});
 
     const [page, setPage] = useState<number>(1)
     const [limit, setLimit] = useState<any | number>(10)
@@ -86,6 +90,25 @@ export default function page() {
         getListMaterias()
     }, [getListMaterias])
 
+    const editMateria = useCallback(async (ev: any) => {
+        try {
+          ev.preventDefault()
+          const url = urlEditMaterias()
+          const { data }: any = await fetchPutRequest(
+            `${url}?pk_id_materia=${selectMateria?.pk_id_materia }`,
+            { "nombre_materia": selectMateria?.nombre_materia }
+          )
+          notify(data?.msg ?? "Modificacion Exitosa")
+          setSelectMateria({})
+          getListMaterias()
+        } catch (e: any) {
+          let error = e ?? "Error en la modificacion"
+          notifyError(error)
+          setSelectMateria({})
+        }
+      }, [selectMateria, urlEditMaterias])
+
+      
     const onChange = useCallback((ev: any, item: string = "") => {
         try {
             ev.preventDefault()
@@ -123,13 +146,27 @@ export default function page() {
         }
     }, [InfoUser])
 
+    const onClickEdit = useCallback((ev: any, item: any = {}) => {
+        try {
+            ev.preventDefault()
+            console.log(item)
+            setSelectMateria({
+                "pk_id_materia": item?.pk_id_materia ?? "",
+                "nombre_materia": item?.nombre_materia ?? "",
+            })
+        } catch (error) {
+            notifyError("Error al seleccionar la materia")
+        }
+    }, [])
+
+
     return (
         <div className="main_page flex min-h-screen flex-col items-center">
-            {/* <button
+            <button
                 className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
-                onClick={() => router.push('/pages/users/create-users')}
+                onClick={() => router.push('/pages/materias/create-materias')}
             >Creacion de materias
-            </button> */}
+            </button>
 
             <TablaModelo
                 title={"Tabla de materias"}
@@ -139,21 +176,25 @@ export default function page() {
                     "Nombre materia",
                     "Id curso",
                     "Nombre curso",
+                    "Editar",
                 ]}
                 items={materias.map(({
                     pk_id_materia,
                     nombre_materia,
                     pk_id_curso,
                     nombre_curso,
+                    editar,
                 }) => ({
                     pk_id_materia,
                     nombre_materia: nombre_materia ?? "",
                     pk_id_curso: pk_id_curso ?? "",
                     nombre_curso: nombre_curso ?? "",
+                    editar: editar ?? "editar",
                 }))}
                 footer={[]}
                 onChangePageLimit={onChange}
                 onClickRow={onChange}
+                editItem={onClickEdit}
                 onClickItem={onClickItems}
                 buttonNext={nextPage ? false : true}
                 buttonPrevious={page == 1 ? true : false}
@@ -205,7 +246,50 @@ export default function page() {
                     />
                 </div>
             </TablaModelo>
+            <Modal
+                showModal={(Object.keys(selectMateria ?? {}).length >= 1)}
+                closeModal={() => { setSelectMateria({}) }}
+            >
+                <form
+                    onSubmit={editMateria}
+                    className="flex justify-center flex-col items-center my-3"
+                >
 
+                    <div className="flex flex-row items-center my-3">
+                        <label htmlFor="id" className="mx-2 w-40" >Id materia</label>
+                        <input
+                            type="cel"
+                            id="id"
+                            name="id"
+                            className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            value={selectMateria?.pk_id_materia ?? ""}
+                            disabled={true}
+                        />
+                        
+                    </div>
+                    <div className="flex flex-row items-center my-3">
+                        <label htmlFor="name" className="mx-2 w-40" >Nombre materia</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            value={selectMateria?.nombre_materia ?? ""}
+                            onChange={(ev) => {
+                                let copyCourse = { ...selectMateria }
+                                copyCourse["nombre_materia"] = ev.target.value
+                                setSelectMateria(copyCourse)
+                            }}
+                        />
+                    </div>
+
+                    <button
+                        className="flex justify-center bg-backg-container-gray rounded-inputs my-3 py-1 px-5 w-40"
+                    >
+                        Editar materia
+                    </button>
+                </form>
+            </Modal>
         </div>
     );
 }
