@@ -118,9 +118,15 @@ export const UserInfoProvider = ({ children }) => {
     updateUserInfo({ isSignedIn: false, userInfo: null });
     router.push('/')
   }
+  if (typeof window !== "undefined" && [null].includes(window.localStorage.getItem("userLogin"))) {
+    router.push('/')
+  }
+
   if (typeof window !== "undefined" &&
     Object.keys(userInfo?.userInfo ?? {}).length < 1 &&
-    (window.localStorage.getItem("userLogin")) != "false") {
+    (window.localStorage.getItem("userLogin")) != "false" &&
+    (window.localStorage.getItem("userLogin")) != null
+  ) {
     return <infoContext.Provider value={{ userInfo, updateUserInfo, setInfoLogout, getInfo }}>
       <div className="flex min-h-screen flex-col items-center justify-around p-20 sm:flex-row">
         <p>Cargando...</p>
@@ -141,7 +147,8 @@ export const UserInfoProvider = ({ children }) => {
               <p>{loading ?? ""}</p>
             </div>
           ) : (
-            (window.localStorage.getItem("userLogin")) == "false") ? (<Home />) : (children)
+            ["false",null].includes(window.localStorage.getItem("userLogin"))
+          ) ? (<Home />) : (children)
         ) : (
           <></>
         )
