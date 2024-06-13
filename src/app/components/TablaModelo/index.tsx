@@ -48,7 +48,7 @@ export default function TablaModelo(
 ) {
 
   return (
-    <div className="relative overflow-x-auto rounded-lg model_table dark:model_table dark:text-gray-800 max-[450px]:w-[25rem] max-[400px]:w-[20rem] md:w-[40rem]">
+    <div className="relative overflow-x-auto rounded-lg model_table dark:model_table dark:text-gray-800 max-[570px]:w-[25rem] max-[750px]:w-[32rem] max-[400px]:w-[20rem] md:w-[40rem]">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
         <caption className="p-5 text-lg font-semibold text-center rtl:text-right text-gray-900 model_table dark:text-white dark:model_table ">
           {title}

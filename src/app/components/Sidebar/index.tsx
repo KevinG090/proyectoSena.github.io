@@ -65,7 +65,7 @@ export default function Sidebar({ isSidebarOpen = false, showSidebar = () => { }
         >Usuarios
         </button>
       )}
-      <button
+      {/* <button
         className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40 "
         onClick={() => onChangeRoutes('/pages/buzon')}
       >Buzon
@@ -74,7 +74,7 @@ export default function Sidebar({ isSidebarOpen = false, showSidebar = () => { }
         className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
         onClick={() => onChangeRoutes('/pages/contactos')}
       >Contactos
-      </button>
+      </button> */}
 
       <button
         className="flex justify-center bg-backg-inputs-red rounded-inputs py-1 px-5 w-40 mt-auto"
