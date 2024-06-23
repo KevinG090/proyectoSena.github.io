@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname,useSearchParams } from 'next/navigation'
 import Home from '../page';
 import { fetchGetRequest } from "../utils/fetch"
 import { urlUser } from "../utils/routes"
@@ -25,6 +25,8 @@ export const infoContext = createContext({
 export const UserInfoProvider = ({ children }) => {
   const router = useRouter()
   const path = usePathname()
+  const searchParams = useSearchParams()
+
   const allPermisions = RoutePermisions()
 
   const [userInfo, setUserInfo] = useState(initialUser);
@@ -89,17 +91,27 @@ export const UserInfoProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    if (Object.keys(userInfo?.userInfo ?? {}).length < 1) return
-
-    if (!(Object.keys(allPermisions).includes(path)) || localStorage.getItem("userLogin") != "true") return
-    else if (allPermisions[path]["permisions"][0] == "*" && allPermisions[path]["typeUsers"][0] == "*") return
-
+    let params = false
     let validate = false
-    for (permiso in userInfo?.userPermissions?.permisos ?? []) {
-      if (allPermisions[path]["permisions"].includes(permiso)) validate = true
+    let tempPath = path
+
+    if (Object.keys(userInfo?.userInfo ?? {}).length < 1) return
+    if ((searchParams?.size ?? 0) >= 1) {
+      params = true
+      tempPath = tempPath.split("?")[0] + ( params ? "?" : "")
     }
 
-    if (!validate && allPermisions[path]["typeUsers"][0] != "*" && (allPermisions[path]["typeUsers"].includes(userInfo?.roleInfo?.tipo_usuario))) {
+    if (
+      (!(Object.keys(allPermisions).includes(tempPath)) ||
+       localStorage.getItem("userLogin") != "true")
+    ) return
+    else if (allPermisions[tempPath]["permisions"][0] == "*" && allPermisions[tempPath]["typeUsers"][0] == "*") return
+
+    for (permiso in userInfo?.userPermissions?.permisos ?? []) {
+      if (allPermisions[tempPath]["permisions"].includes(permiso)) validate = true
+    }
+
+    if (!validate && allPermisions[tempPath]["typeUsers"][0] != "*" && (allPermisions[tempPath]["typeUsers"].includes(userInfo?.roleInfo?.tipo_usuario))) {
       validate = true
     }
 

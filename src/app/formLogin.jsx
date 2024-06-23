@@ -91,7 +91,7 @@ export default function FormLogin() {
       <div className="form-login relative flex flex-col place-items-left mt-5 mb-10">
         <label htmlFor="passworld">Contraseña <b>*</b></label>
         <input
-          type="text"
+          type="password"
           name="passworld"
           id="passworld"
           className="bg-backg-inputs rounded-inputs mt-2 py-1 px-5"

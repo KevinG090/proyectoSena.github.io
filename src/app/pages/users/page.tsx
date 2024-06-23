@@ -3,21 +3,35 @@
 import TablaModelo from "@/app/components/TablaModelo";
 
 import { useRouter } from 'next/navigation'
-import { useState, useEffect, useCallback, cache, ReactNode } from "react";
+import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
 import { fetchGetRequest } from "../../utils/fetch"
 import { urlGetListUsers } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
+import { infoContext } from "../../hooks/AuthHook";
+
+import TipoUsuarios from "../../utils/enum";
+import Modal from "@/app/components/Modal";
+import ConfigUsers from "@/app/components/ConfigUsers";
 
 export default function page() {
   const router = useRouter()
+  const { getInfo } = useContext(infoContext);
+  const [InfoUser, setInfoUser] = useState<any | Object>({});
+
   const [searchName, setSearchName] = useState<null | string>("")
   const [searchId, setSearchId] = useState<null | string>("")
   const [usuarios, setUsuarios] = useState([])
   const [loadingItems, setLoadingItems] = useState(false)
+  const [selectUser, setSelectUser] = useState<null | boolean | any>({})
 
   const [page, setPage] = useState<number>(1)
   const [limit, setLimit] = useState<any | number>(10)
   const [nextPage, setNextPage] = useState(false)
+
+  useEffect(() => {
+    let res: any = getInfo()
+    setInfoUser(res ?? {})
+  }, [getInfo])
 
   const getListUsers = useCallback(async () => {
 
@@ -86,11 +100,14 @@ export default function page() {
 
   return (
     <div className="flex min-h-screen flex-col items-center">
-      <button
-        className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
-        onClick={() => router.push('/pages/users/create-users')}
-      >Creacion de usuarios
-      </button>
+      {[TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") && (
+        <button
+          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+          onClick={() => router.push('/pages/users/create-users')}
+        >Creacion de usuarios
+        </button>
+
+      )}
 
       <TablaModelo
         title={"Tabla de Usuarios"}
@@ -118,6 +135,11 @@ export default function page() {
         footer={[]}
         onChangePageLimit={onChange}
         asignarItem = {asignarCursos}
+        editItem = {(ev,data) => {
+          ev.preventDefault()
+          console.log(data)
+          setSelectUser(data)
+        }}
         onClickRow={onChange}
         buttonNext={nextPage ? false : true}
         buttonPrevious={page == 1 ? true : false}
@@ -145,7 +167,12 @@ export default function page() {
           />
         </div>
       </TablaModelo>
-
+      <Modal
+        showModal={(Object.keys(selectUser ?? {}).length >= 1)}
+        closeModal={() => { setSelectUser({}) }}
+      >
+          <ConfigUsers id_usuario={selectUser?.pk_id_usuario ?? null} only_pass={true}></ConfigUsers>
+      </Modal>
     </div>
   )
 }

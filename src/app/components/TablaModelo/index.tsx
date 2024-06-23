@@ -132,7 +132,11 @@ export default function TablaModelo(
           )}
         </tbody>
       </table>
-      <form className="flex items-center flex-column flex-wrap md:flex-row justify-between bg-gray-50 dark:bg-gray-700" aria-label="Table formigation">
+      <form
+        className="flex items-center flex-column flex-wrap md:flex-row justify-between bg-gray-50 dark:bg-gray-700"
+        aria-label="Table formigation"
+        autoComplete="off"
+      >
         <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 my-2 ml-5">
           <li>
             <button

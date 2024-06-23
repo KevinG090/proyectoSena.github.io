@@ -25,7 +25,7 @@ export default function FormModelo(
 ) {
 
   return (
-    <div className="flex min-h-screen flex-col items-center">
+    <div className="flex flex-col items-center">
       <div className="relative overflow-x-auto rounded-lg model_table dark:model_table dark:text-gray-800 max-[450px]:w-[25rem] max-[400px]:w-[20rem] md:w-[40rem]">
         <form
           onSubmit={onSubmit}

@@ -12,6 +12,14 @@ import { urlGetListCourses, urlEditCourses } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
 import { infoContext } from "../../hooks/AuthHook";
 
+const tableHeaders = [
+  "Id del curso",
+  "Nombre",
+  // "Descripcion",
+  "Editar",
+  "Asignar Materias",
+]
+
 export default function page() {
   const router = useRouter()
   const { getInfo } = useContext(infoContext);
@@ -149,21 +157,19 @@ export default function page() {
 
   return (
     <div className="main_page flex min-h-screen flex-col items-center">
-      <button
-        className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
-        onClick={() => router.push('/pages/cursos/create-cursos')}
-      >Creacion de cursos
-      </button>
+      {[TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") && (
+        <button
+          className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+          onClick={() => router.push('/pages/cursos/create-cursos')}
+        >Creacion de cursos
+        </button>
+      )}
       <TablaModelo
         title={"Tabla de Cursos"}
         description=""
-        headers={[
-          "Id del curso",
-          "Nombre",
-          // "Descripcion",
-          "Editar",
-          "Asignar Materias",
-        ]}
+        headers={[TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") ? (
+          tableHeaders
+      ) : tableHeaders.filter((item) => item != "Editar" && item != "Asignar Materias")}
         items={cursos.map(({
           pk_id_curso,
           nombre_curso,
@@ -182,7 +188,7 @@ export default function page() {
         onChangePageLimit={onChange}
         onClickRow={onChange}
         onClickItem={onClickItems}
-        asignarItem = {asignarMaterias}
+        asignarItem={asignarMaterias}
         buttonNext={nextPage ? false : true}
         buttonPrevious={page == 1 ? true : false}
       >

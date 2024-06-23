@@ -5,11 +5,19 @@ import Modal from "@/app/components/Modal";
 
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
-import { fetchGetRequest,fetchPutRequest } from "../../utils/fetch"
-import { urlGetListMateriasCursos,urlEditMaterias } from "../../utils/routes"
+import { fetchGetRequest, fetchPutRequest } from "../../utils/fetch"
+import { urlGetListMateriasCursos, urlEditMaterias } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
 import { infoContext } from "../../hooks/AuthHook";
 import TipoUsuarios from "../../utils/enum";
+
+const tableHeaders = [
+    "Id materia",
+    "Nombre materia",
+    "Id curso",
+    "Nombre curso",
+    "Editar",
+]
 
 export default function page() {
     const router = useRouter()
@@ -92,23 +100,23 @@ export default function page() {
 
     const editMateria = useCallback(async (ev: any) => {
         try {
-          ev.preventDefault()
-          const url = urlEditMaterias()
-          const { data }: any = await fetchPutRequest(
-            `${url}?pk_id_materia=${selectMateria?.pk_id_materia }`,
-            { "nombre_materia": selectMateria?.nombre_materia }
-          )
-          notify(data?.msg ?? "Modificacion Exitosa")
-          setSelectMateria({})
-          getListMaterias()
+            ev.preventDefault()
+            const url = urlEditMaterias()
+            const { data }: any = await fetchPutRequest(
+                `${url}?pk_id_materia=${selectMateria?.pk_id_materia}`,
+                { "nombre_materia": selectMateria?.nombre_materia }
+            )
+            notify(data?.msg ?? "Modificacion Exitosa")
+            setSelectMateria({})
+            getListMaterias()
         } catch (e: any) {
-          let error = e ?? "Error en la modificacion"
-          notifyError(error)
-          setSelectMateria({})
+            let error = e ?? "Error en la modificacion"
+            notifyError(error)
+            setSelectMateria({})
         }
-      }, [selectMateria, urlEditMaterias])
+    }, [selectMateria, urlEditMaterias])
 
-      
+
     const onChange = useCallback((ev: any, item: string = "") => {
         try {
             ev.preventDefault()
@@ -136,9 +144,12 @@ export default function page() {
                 [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "")
             ) searchFilters.push(["pk_id_curso", item?.pk_id_curso ?? ""])
             if (![null, ""].includes(item?.pk_id_materia ?? "")) searchFilters.push(["pk_id_materia", item?.pk_id_materia ?? ""])
-            if (searchFilters.length >= 1) { modifiedQueries = new URLSearchParams(searchFilters).toString() };
+            if (searchFilters.length >= 1) { 
+                modifiedQueries = new URLSearchParams(searchFilters).toString() 
+                router.push(`/pages/notas?${modifiedQueries}`)
+            };
+            router.push(`/pages/notas`)
 
-            router.push(`/pages/notas?${modifiedQueries}`)
 
         } catch (error) {
             console.log(error)
@@ -162,22 +173,21 @@ export default function page() {
 
     return (
         <div className="main_page flex min-h-screen flex-col items-center">
-            <button
-                className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
-                onClick={() => router.push('/pages/materias/create-materias')}
-            >Creacion de materias
-            </button>
+            {[TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") && (
+                <button
+                    className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+                    onClick={() => router.push('/pages/materias/create-materias')}
+                >Creacion de materias
+                </button>
+
+            )}
 
             <TablaModelo
                 title={"Tabla de materias"}
                 description=""
-                headers={[
-                    "Id materia",
-                    "Nombre materia",
-                    "Id curso",
-                    "Nombre curso",
-                    "Editar",
-                ]}
+                headers={[TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") ? (
+                    tableHeaders
+                ) : tableHeaders.filter((item) => item != "Editar")}
                 items={materias.map(({
                     pk_id_materia,
                     nombre_materia,
@@ -208,6 +218,7 @@ export default function page() {
                         className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search for Id"
                         onChange={(ev) => { setSearchIdMaterias(ev.target.value) }}
+                        autoComplete="none"
                     />
                 </div>
                 <div className="flex flex-row items-center my-3">
@@ -219,6 +230,7 @@ export default function page() {
                         className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search for name"
                         onChange={(ev) => { setSearchNameMaterias(ev.target.value) }}
+                        autoComplete="none"
                     />
                 </div>
                 <div className="flex flex-row items-center my-3">
@@ -265,7 +277,7 @@ export default function page() {
                             value={selectMateria?.pk_id_materia ?? ""}
                             disabled={true}
                         />
-                        
+
                     </div>
                     <div className="flex flex-row items-center my-3">
                         <label htmlFor="name" className="mx-2 w-40" >Nombre materia</label>

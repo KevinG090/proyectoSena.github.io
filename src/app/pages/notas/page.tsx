@@ -169,6 +169,7 @@ export default function page() {
         <form
           onSubmit={crearNota ? createNota : editNota}
           className="flex justify-center flex-col items-center my-3"
+          autoComplete="off"
         >
           {crearNota ? (
             <div>

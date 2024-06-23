@@ -3,10 +3,11 @@
 import FormModelo from "@/app/components/Form";
 import TipoUsuarios from "../../utils/enum"
 import { useRouter } from 'next/navigation'
-import { useState, useEffect, useCallback, cache, ReactNode } from "react";
+import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
 import { fetchPostRequest, fetchGetRequest, fetchPutRequest } from "../../utils/fetch"
 import { urlCreateUsers, urlGetSpecifyUsers, urlModifyUsers } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
+import { infoContext } from "../../hooks/AuthHook";
 import ChangePass from "@/app/components/ConfigUsers/ChangePass"
 
 type Entradas = {
@@ -17,10 +18,18 @@ type Entradas = {
 export default function page({ id_usuario = null, only_pass = false }: Entradas) {
   const router = useRouter()
 
+  const { getInfo } = useContext(infoContext);
+  const [InfoUser, setInfoUser] = useState<any>({});
+
   const [newUser, setNewUser] = useState<any>({ "contraseña": "123456789" })
   const [loadingItems, setLoadingItems] = useState(false)
   const [listPasswords, setListPasswords] = useState<any>(["", ""])
   const [createUsers, setCreateUsers] = useState(false)
+
+  useEffect(() => {
+    let res: any = getInfo()
+    setInfoUser(res ?? {})
+  }, [getInfo])
 
   const getInfoUser = useCallback(async () => {
 
@@ -186,19 +195,21 @@ export default function page({ id_usuario = null, only_pass = false }: Entradas)
       {(!createUsers && !only_pass) && (
         <ChangePass listPasswords={listPasswords} />
       )}
-      <div className="flex flex-row items-center my-3 justify-evenly">
-        <label htmlFor="fk_id_tipo_usuario" className="mx-2 w-40">Tipo de usuarios</label>
-        <select
-          id="fk_id_tipo_usuario"
-          name="fk_id_tipo_usuario"
-          className="block w-60 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          value={newUser?.fk_id_tipo_usuario ?? ""}
-        >
-          <option selected value={TipoUsuarios.ADMINISTRADOR}>Administrador</option>
-          <option value={TipoUsuarios.ESTUDIANTE}>Estudiante</option>
-          <option value={TipoUsuarios.PROFESOR}>Profesor</option>
-        </select>
-      </div>
+      {[TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") && (
+        <div className="flex flex-row items-center my-3 justify-evenly">
+          <label htmlFor="fk_id_tipo_usuario" className="mx-2 w-40">Tipo de usuarios</label>
+          <select
+            id="fk_id_tipo_usuario"
+            name="fk_id_tipo_usuario"
+            className="block w-60 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            value={newUser?.fk_id_tipo_usuario ?? ""}
+          >
+            <option selected value={TipoUsuarios.ADMINISTRADOR}>Administrador</option>
+            <option value={TipoUsuarios.ESTUDIANTE}>Estudiante</option>
+            <option value={TipoUsuarios.PROFESOR}>Profesor</option>
+          </select>
+        </div>
+      )}
       <div className="flex flex-row items-center my-3 justify-evenly">
         <button
           className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-80"

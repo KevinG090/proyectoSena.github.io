@@ -6,6 +6,14 @@ export default function Home() {
     <main className="main_page login flex min-h-screen flex-col items-center justify-around p-20 sm:flex-row">
       <div className="relative flex place-items-center">
         <Image
+          className="cursor-pointer z-50 min-[450px]:fixed top-2 left-2 min-[500px]:relative left-auto"
+          src="/logo_nombre.png"
+          alt="icon_institute"
+          width={200}
+          height={40}
+          priority
+        />
+        <Image
           className="relative "
           src="/undraw_Welcoming_re_x0qo.png"
           alt="menu"

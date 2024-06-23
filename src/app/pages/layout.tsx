@@ -30,6 +30,14 @@ export default function DashboardLayout({
         onClick={() => showSidebar()}
       />
       {children}
+      <Image
+          className="cursor-pointer z-50 fixed bottom-2 right-2 rounded-full min-[600px]:w-[100px] min-[600px]:h-[100px] min-[200px]:w-[70px] h-[70px]"
+          src="/logo.png"
+          alt="logo"
+          width={200}
+          height={200}
+          priority
+        />
     </section>
   )
 }
