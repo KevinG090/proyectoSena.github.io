@@ -89,6 +89,7 @@ export default function TablaModelo(
                       if (i > (headers.length - 1)) return
                       if (value == "editar") {
                         return <th
+                          key={`${index}-${i}`}
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:bg-gray-700"
                           onClick={ev => editItem(ev, item)}
                         >
@@ -98,6 +99,7 @@ export default function TablaModelo(
 
                       if (value == "asignar") {
                         return <th
+                          key={`${index}-${i}`}
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:bg-gray-700"
                           onClick={ev => asignarItem(ev, item)}
                         >
@@ -106,6 +108,7 @@ export default function TablaModelo(
                       }
                       if (value == "eliminar") {
                         return <th
+                          key={`${index}-${i}`}
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:bg-gray-700"
                           onClick={ev => deleteItem(ev, item)}
                         >

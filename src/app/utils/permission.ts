@@ -50,6 +50,10 @@ export default function RoutePermisions() {
         "typeUsers": [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR],
         "permisions": ["*"]
       },
+      "/pages/cursos/search-students?": {
+        "typeUsers": [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR],
+        "permisions": ["*"]
+      },
       // <<-------------- Usuarios -------------->>
       "/pages/users": {
         "typeUsers": [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR],
