@@ -25,7 +25,7 @@ export default function page() {
       const url = urlGetListEvents()
       setLoadingItems(true)
       const { data }: any = await fetchGetRequest(url)
-      notify(data?.msg ?? "Consulta Exitosa")
+      // notify(data?.msg ?? "Consulta Exitosa")
       setEvents(data?.obj?.results ?? [])
       setLoadingItems(false)
 
@@ -62,10 +62,7 @@ export default function page() {
       <div className="flex flex-col place-items-center justify-between w-full">
         {
           events.map((val: any, index) => {
-            let items = val?.nombre_evento ?? "Evento General"
-            let fecha = val?.fecha_publicacion ?? ""
-            let contenido = val?.contenido ?? "contenido"
-            return <Event key={index} item={items} fecha={fecha} contenido={contenido} />
+            return <Event key={index} data={val} getListEvents={getListEvents}/>
           })
         }
       </div >

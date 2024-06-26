@@ -36,13 +36,13 @@ export default function page() {
       setLoadingItems(true)
       const url = urlCreateCourses()
       const { data }: any = await fetchPostRequest(url, newCourse)
-      notify(data?.msg ?? "Creacion Exitosa")
+      notify(data?.msg ?? "Creación Exitosa")
       setLoadingItems(false)
 
       router.push("/pages/cursos")
 
     } catch (e: any) {
-      let error = e ?? "Error en la creacion"
+      let error = e ?? "Error en la creación"
       notifyError(error)
       setLoadingItems(false)
     }
@@ -52,7 +52,7 @@ export default function page() {
 
   return (
     <FormModelo
-      title={"Creacion de Cursos"}
+      title={"Creación de Cursos"}
       onChange={onChange}
       onSubmit={createUser}
     >

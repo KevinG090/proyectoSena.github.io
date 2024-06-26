@@ -37,12 +37,12 @@ export default function page() {
             setLoadingItems(true)
             const url = urlCreateMaterias()
             const { data }: any = await fetchPostRequest(url, newMateria)
-            notify(data?.msg ?? "Creacion Exitosa")
+            notify(data?.msg ?? "Creación Exitosa")
             setLoadingItems(false)
             router.push("/pages/materias")
 
         } catch (e: any) {
-            let error = e ?? "Error en la creacion"
+            let error = e ?? "Error en la creación"
             notifyError(error)
             setLoadingItems(false)
         }
@@ -52,7 +52,7 @@ export default function page() {
 
     return (
         <FormModelo
-            title={"Creacion de Materias"}
+            title={"Creación de Materias"}
             onChange={onChange}
             onSubmit={createMateria}
         >

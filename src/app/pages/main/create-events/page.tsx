@@ -35,11 +35,11 @@ export default function page() {
       setLoadingItems(true)
       const url = urlCreateEvents()
       const { data }: any = await fetchPostRequest(url, newEvent)
-      notify(data?.msg ?? "Creacion Exitosa")
+      notify(data?.msg ?? "Creación Exitosa")
       setLoadingItems(false)
 
     } catch (e: any) {
-      let error = e ?? "Error en la creacion"
+      let error = e ?? "Error en la creación"
       notifyError(error)
       setLoadingItems(false)
     }
@@ -49,7 +49,7 @@ export default function page() {
 
   return (
     <FormModelo
-      title={"Creacion de Eventos"}
+      title={"Creación de Eventos"}
       onChange={onChange}
       onSubmit={createUser}
     >

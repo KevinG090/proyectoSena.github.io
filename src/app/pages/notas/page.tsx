@@ -108,11 +108,11 @@ export default function page() {
       setLoadingItems(true)
       const url = urlCreateNotas()
       const { data }: any = await fetchPostRequest(url, newNota)
-      notify(data?.msg ?? "Creacion Exitosa")
+      notify(data?.msg ?? "Creación Exitosa")
       setLoadingItems(false)
 
     } catch (e: any) {
-      let error = e ?? "Error en la creacion"
+      let error = e ?? "Error en la creación"
       notifyError(error)
       setLoadingItems(false)
     }
@@ -127,11 +127,11 @@ export default function page() {
       setLoadingItems(true)
       // const url = urlCreateCourses()
       // const { data }: any = await fetchPostRequest(url, newCourse)
-      // notify(data?.msg ?? "Creacion Exitosa")
+      // notify(data?.msg ?? "Creación Exitosa")
       setLoadingItems(false)
 
     } catch (e: any) {
-      let error = e ?? "Error en la creacion"
+      let error = e ?? "Error en la creación"
       notifyError(error)
       setLoadingItems(false)
     }

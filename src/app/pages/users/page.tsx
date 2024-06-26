@@ -104,7 +104,7 @@ export default function page() {
         <button
           className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
           onClick={() => router.push('/pages/users/create-users')}
-        >Creacion de usuarios
+        >Creación de usuarios
         </button>
 
       )}

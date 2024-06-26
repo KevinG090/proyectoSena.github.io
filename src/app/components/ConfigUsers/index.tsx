@@ -94,12 +94,12 @@ export default function page({ id_usuario = null, only_pass = false }: Entradas)
       setLoadingItems(true)
       const url = urlCreateUsers()
       const { data }: any = await fetchPostRequest(url, newUser)
-      notify(data?.msg ?? "Creacion Exitosa")
+      notify(data?.msg ?? "Creación Exitosa")
       setLoadingItems(false)
       router.push("/pages/main")
 
     } catch (e: any) {
-      let error = e ?? "Error en la creacion"
+      let error = e ?? "Error en la creación"
       notifyError(error)
       setLoadingItems(false)
     }
@@ -128,7 +128,7 @@ export default function page({ id_usuario = null, only_pass = false }: Entradas)
 
       const url = urlModifyUsers()
       const { data }: any = await fetchPutRequest(`${url}?pk_id_usuario=${id_usuario}`, copyNewUSer)
-      notify(data?.msg ?? "Modificacion Exitosa")
+      notify(data?.msg ?? "Modificación Exitosa")
       setLoadingItems(false)
       router.push("/pages/main")
 
@@ -143,7 +143,7 @@ export default function page({ id_usuario = null, only_pass = false }: Entradas)
 
   return (
     <FormModelo
-      title={(createUsers ? "Creacion" : "Modificacion") + " de Usuarios"}
+      title={(createUsers ? "Creación" : "Modificación") + " de Usuarios"}
       onChange={onChange}
       onSubmit={createUsers ? createUser : modifyUser}
     >
@@ -214,7 +214,7 @@ export default function page({ id_usuario = null, only_pass = false }: Entradas)
         <button
           className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-80"
           type="submit"
-        >{(createUsers ? "Creacion" : "Modificacion") + " de Usuarios"}
+        >{(createUsers ? "Creación" : "Modificación") + " de Usuarios"}
         </button>
       </div>
 

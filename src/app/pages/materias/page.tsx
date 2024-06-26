@@ -106,7 +106,7 @@ export default function page() {
                 `${url}?pk_id_materia=${selectMateria?.pk_id_materia}`,
                 { "nombre_materia": selectMateria?.nombre_materia }
             )
-            notify(data?.msg ?? "Modificacion Exitosa")
+            notify(data?.msg ?? "Modificación Exitosa")
             setSelectMateria({})
             getListMaterias()
         } catch (e: any) {
@@ -177,7 +177,7 @@ export default function page() {
                 <button
                     className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
                     onClick={() => router.push('/pages/materias/create-materias')}
-                >Creacion de materias
+                >Creación de materias
                 </button>
 
             )}

@@ -87,7 +87,7 @@ export default function page() {
         `${url}?pk_id_curso=${selectCourse?.pk_id_curso}`,
         { "nombre_curso": selectCourse?.nombre_curso }
       )
-      notify(data?.msg ?? "Modificacion Exitosa")
+      notify(data?.msg ?? "Modificación Exitosa")
       setSelectCourse({})
       getListCourses()
     } catch (e: any) {
@@ -161,7 +161,7 @@ export default function page() {
         <button
           className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
           onClick={() => router.push('/pages/cursos/create-cursos')}
-        >Creacion de cursos
+        >Creación de cursos
         </button>
       )}
       <TablaModelo

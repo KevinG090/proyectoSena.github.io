@@ -20,6 +20,12 @@ export const urlGetListEvents = () => {
 export const urlCreateEvents = () => {
     return `${ulrBaseApi}/eventos/crear-eventos`
 }
+export const urlModifyEvents = () => {
+    return `${ulrBaseApi}/eventos/modificar-eventos`
+}
+export const urlDeleteEvents = () => {
+    return `${ulrBaseApi}/eventos/eliminar-eventos`
+}
 
 // <<------- Usuarios -------->>
 export const urlGetListUsers = () => {

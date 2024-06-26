@@ -164,11 +164,11 @@ export default function page({ params }: { params: { id: string } }) {
             const url = urlCreateNotas()
             console.log(newNota)
             const { data }: any = await fetchPostRequest(url, newNota)
-            notify(data?.msg ?? "Creacion Exitosa")
+            notify(data?.msg ?? "Creación Exitosa")
             setLoadingItems(false)
 
         } catch (e: any) {
-            let error = e ?? "Error en la creacion"
+            let error = e ?? "Error en la creación"
             notifyError(error)
             setLoadingItems(false)
         }
