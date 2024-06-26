@@ -124,7 +124,9 @@ export default function page({ params }: { params: { id: string } }) {
                 const { data }: any = await fetchPostRequest(url, body)
             })
             setShowModal(false)
-            await getListMateriasCursos()
+            setTimeout(async () => {
+                await getListMateriasCursos()
+            }, 1000)
         } catch (error) {
             console.log(error)
             notifyError("Error al modificar")
@@ -139,7 +141,9 @@ export default function page({ params }: { params: { id: string } }) {
             let body = { "fk_id_materia": deleteRelation?.pk_id_materia, "fk_id_curso": deleteRelation?.pk_id_curso }
             const { data }: any = await fetchDeleteRequest(url, body)
             setDeleteRelation({})
-            await getListMateriasCursos()
+            setTimeout(async () => {
+                await getListMateriasCursos()
+            }, 1000)
         } catch (error) {
             console.log(error)
             notifyError("Error al modificar")

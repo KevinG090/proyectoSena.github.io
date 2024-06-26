@@ -76,7 +76,7 @@ export default function page({ id_usuario = null, only_pass = false }: Entradas)
       if ("nombre_usuario" in data) { copyNewUSer["nombre_usuario"] = data?.nombre_usuario ?? "" }
       if ("celular" in data) { copyNewUSer["celular"] = data?.celular ?? "" }
       if ("identificacion" in data) { copyNewUSer["identificacion"] = data?.identificacion ?? "" }
-      if ("fk_id_tipo_usuario" in data) { copyNewUSer["fk_id_tipo_usuario"] = data?.fk_id_tipo_usuario ?? "" }
+      if ("fk_id_tipo_usuario" in data) { copyNewUSer["fk_id_tipo_usuario"] = String(data?.fk_id_tipo_usuario ?? "") }
       if ("correo" in data && createUsers) { copyNewUSer["correo"] = data?.correo ?? "" }
 
       setNewUser((prevUser: any) => ({ ...prevUser, ...copyNewUSer }));
@@ -125,6 +125,8 @@ export default function page({ id_usuario = null, only_pass = false }: Entradas)
         copyNewUSer["contraseña"] = listPasswords[0]
       }
       else if ("contraseña" in copyNewUSer) { copyNewUSer["contraseña"] = null }
+
+      if ("fk_id_tipo_usuario" in copyNewUSer) { copyNewUSer["fk_id_tipo_usuario"] = String(copyNewUSer["fk_id_tipo_usuario"]) }
 
       const url = urlModifyUsers()
       const { data }: any = await fetchPutRequest(`${url}?pk_id_usuario=${id_usuario}`, copyNewUSer)
