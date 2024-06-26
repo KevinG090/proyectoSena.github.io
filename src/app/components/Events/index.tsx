@@ -92,7 +92,6 @@ export default function Event({ data = {}, getListEvents = async () => { } }) {
             className="flex justify-center bg-backg-container-gray rounded-inputs text-sm my-3 py-1 px-5 w-40"
             onClick={(ev) => {
               ev.preventDefault()
-              console.log(data)
               setSelectEvent(data)
             }}
           >Editar

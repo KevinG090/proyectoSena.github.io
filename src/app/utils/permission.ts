@@ -68,7 +68,11 @@ export default function RoutePermisions() {
         "permisions": ["1"]
       },
       "/pages/users/gestion": {
-        "typeUsers": [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR],
+        "typeUsers": [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR, TipoUsuarios.ESTUDIANTE],
+        "permisions": ["1"]
+      },
+      "/pages/users/gestion?": {
+        "typeUsers": [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR, TipoUsuarios.ESTUDIANTE],
         "permisions": ["1"]
       },
       "/pages/users?": {

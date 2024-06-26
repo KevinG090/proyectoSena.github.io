@@ -37,6 +37,7 @@ export default function page() {
       const { data }: any = await fetchPostRequest(url, newEvent)
       notify(data?.msg ?? "Creación Exitosa")
       setLoadingItems(false)
+      router.push("/pages/main")
 
     } catch (e: any) {
       let error = e ?? "Error en la creación"
@@ -60,19 +61,18 @@ export default function page() {
           id="EventName"
           name="EventName"
           value={newEvent?.nombre_evento ?? ""}
-          className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Nombre completo"
         />
       </div>
 
       <div className="flex flex-row items-center my-3 justify-evenly">
         <label htmlFor="contenido" className="mx-2 w-40" >contenido</label>
-        <input
-          type="contenido"
+        <textarea
           id="contenido"
           name="contenido"
           value={newEvent?.contenido ?? ""}
-          className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder=""
         />
       </div>

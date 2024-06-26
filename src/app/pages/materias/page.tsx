@@ -138,7 +138,7 @@ export default function page() {
             ev.preventDefault()
             let searchFilters: ReactNode[] | any = []
             let modifiedQueries = ""
-
+            
             if (
                 ![null, ""].includes(item?.pk_id_curso ?? "") &&
                 [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "")
@@ -147,8 +147,8 @@ export default function page() {
             if (searchFilters.length >= 1) { 
                 modifiedQueries = new URLSearchParams(searchFilters).toString() 
                 router.push(`/pages/notas?${modifiedQueries}`)
-            };
-            router.push(`/pages/notas`)
+            }
+            else router.push(`/pages/notas`)
 
 
         } catch (error) {
@@ -215,7 +215,7 @@ export default function page() {
                         type="number"
                         id="pk_id_materia"
                         name="pk_id_materia"
-                        className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search for Id"
                         onChange={(ev) => { setSearchIdMaterias(ev.target.value) }}
                         autoComplete="none"
@@ -227,7 +227,7 @@ export default function page() {
                         type="text"
                         id="nombre_materia"
                         name="nombre_materia"
-                        className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search for name"
                         onChange={(ev) => { setSearchNameMaterias(ev.target.value) }}
                         autoComplete="none"
@@ -239,7 +239,7 @@ export default function page() {
                         type="number"
                         id="pk_id_curso"
                         name="pk_id_curso"
-                        className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search for Id"
                         value={searchIdCourse}
                         onChange={(ev) => { setSearchIdCourse(ev.target.value) }}
@@ -252,7 +252,7 @@ export default function page() {
                         type="text"
                         id="nombre_curso"
                         name="nombre_curso"
-                        className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search for name"
                         onChange={(ev) => { setSearchNameCourse(ev.target.value) }}
                     />
@@ -273,7 +273,7 @@ export default function page() {
                             type="cel"
                             id="id"
                             name="id"
-                            className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value={selectMateria?.pk_id_materia ?? ""}
                             disabled={true}
                         />
@@ -285,7 +285,7 @@ export default function page() {
                             type="text"
                             id="name"
                             name="name"
-                            className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value={selectMateria?.nombre_materia ?? ""}
                             onChange={(ev) => {
                                 let copyCourse = { ...selectMateria }

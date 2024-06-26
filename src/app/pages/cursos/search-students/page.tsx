@@ -162,10 +162,10 @@ export default function page({ params }: { params: { id: string } }) {
         try {
             setLoadingItems(true)
             const url = urlCreateNotas()
-            console.log(newNota)
             const { data }: any = await fetchPostRequest(url, newNota)
             notify(data?.msg ?? "Creación Exitosa")
             setLoadingItems(false)
+            router.push("/pages/cursos")
 
         } catch (e: any) {
             let error = e ?? "Error en la creación"
@@ -211,7 +211,7 @@ export default function page({ params }: { params: { id: string } }) {
                         type="number"
                         id="user_id"
                         name="user_id"
-                        className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search for Id"
                         onChange={(ev) => { setSearchId(ev.target.value) }}
                     />
@@ -222,7 +222,7 @@ export default function page({ params }: { params: { id: string } }) {
                         type="text"
                         id="user_name"
                         name="user_name"
-                        className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search for name"
                         onChange={(ev) => { setSearchName(ev.target.value) }}
                     />
@@ -243,7 +243,7 @@ export default function page({ params }: { params: { id: string } }) {
                             type="cel"
                             id="new_nota"
                             name="new_nota"
-                            className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Valor de la nueva nota"
                             onChange={(ev) => {
                                 let copyNewNota = { ...newNota }

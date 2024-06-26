@@ -44,8 +44,6 @@ export default function page() {
         [TipoUsuarios.ESTUDIANTE].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") &&
         ["", 0, null].includes(InfoUser?.userInfo?.id_usuario ?? "")
       ) return
-      console.log("InfoUser", InfoUser)
-      console.log("InfoUser?.roleInfo?.tipo_usuario", InfoUser?.roleInfo?.tipo_usuario)
       if ([TipoUsuarios.ESTUDIANTE].includes(InfoUser?.roleInfo?.tipo_usuario ?? "")) {
         searchFilters.push(["pk_id_usuario", InfoUser?.userInfo?.id_usuario])
       }
@@ -85,7 +83,6 @@ export default function page() {
   const onClickButtons = useCallback((ev: any, item: any = {}, data:any = {}) => {
     try {
       ev.preventDefault()
-      console.log(item,data)
       if ("crear" === item) {
         setCrearNota(true)
         let copyNewNota = {...newNota}
@@ -179,7 +176,7 @@ export default function page() {
                   type="cel"
                   id="new_nota"
                   name="new_nota"
-                  className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Valor de la nueva nota"
                   onChange={(ev) => {
                     let copyNewNota = {...newNota}

@@ -184,7 +184,6 @@ export default function page({ params }: { params: { id: string } }) {
                 }))}
                 deleteItem={(ev, data) => {
                     ev.preventDefault()
-                    console.log(data)
                     setDeleteRelation(data)
                 }}
                 footer={[]}
