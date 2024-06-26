@@ -224,12 +224,12 @@ export default function page({ params }: { params: { id: string } }) {
                 </div>
                 <div className="flex justify-around rounded-inputs py-5 px-5 ">
                     <button
-                        className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+                        className="flex justify-center bg-backg-container-gray rounded-inputs my-3 py-1 px-5 w-40"
                         onClick={(ev) => asignarCursos(ev)}
                     >Asignar curso
                     </button>
                     <button
-                        className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+                        className="flex justify-center bg-backg-container-gray rounded-inputs my-3 py-1 px-5 w-40"
                         onClick={(ev) => setSelectMateria([])}
                     >Reset
                     </button>
@@ -245,7 +245,7 @@ export default function page({ params }: { params: { id: string } }) {
                     <p>Id Usuario: {deleteRelation?.pk_id_usuario} - Nombre: {deleteRelation?.nombre_usuario}</p>
                 </div>
                 <button
-                    className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+                    className="flex justify-center bg-backg-container-gray rounded-inputs my-3 py-1 px-5 w-40"
                     onClick={(ev) => eliminarRelacion(ev)}
                 >Eliminar
                 </button>
