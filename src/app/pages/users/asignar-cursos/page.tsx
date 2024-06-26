@@ -6,8 +6,8 @@ import Modal from "@/app/components/Modal";
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
-import { fetchGetRequest, fetchPostRequest } from "../../../utils/fetch"
-import { urlGetSpecifyUsers, urlGetListCourses, urlAsignarCursos } from "../../../utils/routes"
+import { fetchGetRequest, fetchPostRequest, fetchDeleteRequest } from "../../../utils/fetch"
+import { urlGetSpecifyUsers, urlGetListCourses, urlAsignarCursos, urlEliminarRelacionCursoUsuario } from "../../../utils/routes"
 import { notify, notifyError } from "../../../utils/notify"
 import { infoContext } from "../../../hooks/AuthHook";
 
@@ -30,6 +30,7 @@ export default function page({ params }: { params: { id: string } }) {
     const [loadingItems, setLoadingItems] = useState(false)
 
     const [selectMateria, setSelectMateria] = useState<any>([]);
+    const [deleteRelation, setDeleteRelation] = useState<any>({});
 
     const [page, setPage] = useState<number>(1)
     const [limit, setLimit] = useState<any | number>(20)
@@ -99,7 +100,7 @@ export default function page({ params }: { params: { id: string } }) {
     const onClickItems = useCallback((ev: any, item: any = {}) => {
         try {
             ev.preventDefault()
-            if (!["",null].includes(usuario[0]?.fk_id_curso ?? "")) {
+            if (!["", null].includes(usuario[0]?.fk_id_curso ?? "") || Object.keys(selectMateria).length >= 1) {
                 notifyError("El curso ya tiene asignado un curso")
                 return
             }
@@ -123,14 +124,29 @@ export default function page({ params }: { params: { id: string } }) {
                 const { data }: any = await fetchPostRequest(url, body)
             })
             setShowModal(false)
-            setTimeout(()=>{
-                getListUsuarios()
-            },1000)
+            setTimeout(async () => {
+                await getListUsuarios()
+            }, 1000)
         } catch (error) {
             console.log(error)
             notifyError("Error al modificar")
         }
-    }, [InfoUser, selectMateria, pk_id_usuario])
+    }, [InfoUser, selectMateria, pk_id_usuario, getListUsuarios])
+
+    const eliminarRelacion = useCallback(async (ev: any) => {
+        try {
+            ev.preventDefault()
+            let url = urlEliminarRelacionCursoUsuario()
+
+            let body = { "fk_id_usuario": deleteRelation?.pk_id_usuario, "fk_id_curso": deleteRelation?.fk_id_curso }
+            const { data }: any = await fetchDeleteRequest(url, body)
+            setDeleteRelation({})
+            await getListUsuarios()
+        } catch (error) {
+            console.log(error)
+            notifyError("Error al eliminar")
+        }
+    }, [InfoUser, deleteRelation, getListUsuarios])
 
     if (!pk_id_usuario) {
         return <div className="main_page flex min-h-screen flex-col items-center">Cargando..</div>
@@ -166,6 +182,11 @@ export default function page({ params }: { params: { id: string } }) {
                     fk_id_curso: fk_id_curso ?? "Ninguno",
                     eliminar: fk_id_curso ? "eliminar" : "",
                 }))}
+                deleteItem={(ev, data) => {
+                    ev.preventDefault()
+                    console.log(data)
+                    setDeleteRelation(data)
+                }}
                 footer={[]}
                 buttonNext={nextPage ? false : true}
                 buttonPrevious={page == 1 ? true : false}
@@ -201,11 +222,32 @@ export default function page({ params }: { params: { id: string } }) {
                         return (<h4 className={"dark:text-white"} key={index}>{item?.nombre_curso ?? ""}</h4>)
                     })}
                 </div>
-
+                <div className="flex justify-around rounded-inputs py-5 px-5 ">
+                    <button
+                        className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+                        onClick={(ev) => asignarCursos(ev)}
+                    >Asignar curso
+                    </button>
+                    <button
+                        className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
+                        onClick={(ev) => setSelectMateria([])}
+                    >Reset
+                    </button>
+                </div>
+            </Modal>
+            <Modal
+                showModal={(Object.keys(deleteRelation ?? {}).length >= 1)}
+                closeModal={() => setDeleteRelation([])}
+            >
+                <div>
+                    <h2>¿Esta seguro de eliminar la relacion del curso y usuario?</h2>
+                    <p>Id Curso: {deleteRelation?.fk_id_curso} </p>
+                    <p>Id Usuario: {deleteRelation?.pk_id_usuario} - Nombre: {deleteRelation?.nombre_usuario}</p>
+                </div>
                 <button
                     className="flex justify-center bg-backg-container-blue rounded-inputs  py-1 px-5 w-40"
-                    onClick={(ev) => asignarCursos(ev)}
-                >Asignar curso
+                    onClick={(ev) => eliminarRelacion(ev)}
+                >Eliminar
                 </button>
             </Modal>
         </div>

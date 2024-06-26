@@ -46,3 +46,17 @@ export const fetchPutRequest = async (url, body = {}) => {
         throw e?.response?.data?.msg ?? `Error en la peticion ${e}`
     }
 }
+export const fetchDeleteRequest = async (url, body = {}) => {
+    try {
+        let response = await axios({
+            method: 'delete',
+            url: url,
+            data: body,
+            headers:temp_headers
+        })
+        return response
+    }
+    catch (e) {
+        throw e?.response?.data?.msg ?? `Error en la peticion ${e}`
+    }
+}
