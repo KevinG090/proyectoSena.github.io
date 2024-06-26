@@ -138,14 +138,14 @@ export default function page() {
             ev.preventDefault()
             let searchFilters: ReactNode[] | any = []
             let modifiedQueries = ""
-            
+
             if (
                 ![null, ""].includes(item?.pk_id_curso ?? "") &&
                 [TipoUsuarios.ADMINISTRADOR, TipoUsuarios.PROFESOR].includes(InfoUser?.roleInfo?.tipo_usuario ?? "")
             ) searchFilters.push(["pk_id_curso", item?.pk_id_curso ?? ""])
             if (![null, ""].includes(item?.pk_id_materia ?? "")) searchFilters.push(["pk_id_materia", item?.pk_id_materia ?? ""])
-            if (searchFilters.length >= 1) { 
-                modifiedQueries = new URLSearchParams(searchFilters).toString() 
+            if (searchFilters.length >= 1) {
+                modifiedQueries = new URLSearchParams(searchFilters).toString()
                 router.push(`/pages/notas?${modifiedQueries}`)
             }
             else router.push(`/pages/notas`)
@@ -169,6 +169,15 @@ export default function page() {
             notifyError("Error al seleccionar la materia")
         }
     }, [])
+
+    if (
+        [TipoUsuarios.ESTUDIANTE].includes(InfoUser?.roleInfo?.tipo_usuario ?? "") &&
+        ["", "none", null].includes(InfoUser?.userInfo?.pk_id_curso ?? "")
+    ) {
+        return <div className="main_page flex min-h-screen flex-col items-center">
+            <h2>Contactarse con su docente o soporte para asignarle un curso</h2>
+        </div>
+    }
 
 
     return (

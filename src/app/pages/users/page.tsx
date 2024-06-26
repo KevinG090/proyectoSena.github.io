@@ -137,7 +137,6 @@ export default function page() {
         asignarItem = {asignarCursos}
         editItem = {(ev,data) => {
           ev.preventDefault()
-          console.log(data)
           setSelectUser(data)
         }}
         onClickRow={onChange}

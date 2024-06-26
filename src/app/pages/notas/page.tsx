@@ -5,7 +5,7 @@ import Modal from "@/app/components/Modal";
 import { useSearchParams } from 'next/navigation';
 
 import { useState, useEffect, useCallback, useContext, ReactNode } from "react";
-import { fetchGetRequest,fetchPostRequest } from "../../utils/fetch"
+import { fetchGetRequest, fetchPostRequest } from "../../utils/fetch"
 import { urlGetListNotas, urlCreateNotas } from "../../utils/routes"
 import { notify, notifyError } from "../../utils/notify"
 import { infoContext } from "../../hooks/AuthHook";
@@ -80,12 +80,12 @@ export default function page() {
     getListNotas()
   }, [getListNotas])
 
-  const onClickButtons = useCallback((ev: any, item: any = {}, data:any = {}) => {
+  const onClickButtons = useCallback((ev: any, item: any = {}, data: any = {}) => {
     try {
       ev.preventDefault()
       if ("crear" === item) {
         setCrearNota(true)
-        let copyNewNota = {...newNota}
+        let copyNewNota = { ...newNota }
         copyNewNota["fk_relacion_usuario_curso"] = data?.fk_relacion_usuario_curso ?? ""
         copyNewNota["fk_relacion_curso_materia"] = data?.fk_relacion_curso_materia ?? ""
         setNewNota(copyNewNota)
@@ -141,7 +141,7 @@ export default function page() {
         <h5 className="relative place-items-left text-xs">Notas Materias</h5>
       </div>
       <div className="flex flex-col place-items-center justify-between w-52">
-        {
+        {materias.length >= 1 ? (
           materias.map((val: any, index) => {
             let nombreMateria = (val?.nombre_materia ?? "Materias General").toUpperCase();
             let nombreCurso = (val?.nombre_curso ?? "").toUpperCase();
@@ -157,7 +157,7 @@ export default function page() {
               onClickButton={onClickButtons}
             />
           })
-        }
+        ) : (<h2>No se encontraron notas</h2>)}
       </div >
       <Modal
         showModal={showModal}
@@ -179,7 +179,7 @@ export default function page() {
                   className="block p-2 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Valor de la nueva nota"
                   onChange={(ev) => {
-                    let copyNewNota = {...newNota}
+                    let copyNewNota = { ...newNota }
                     copyNewNota["nota"] = ev.target.value
                     setNewNota(copyNewNota)
                   }}
