@@ -22,8 +22,8 @@ export default function FormLogin() {
     let items = Object.fromEntries(Object.entries(Object.fromEntries(formData)))
     let body = {
       data: cifrarAES(
-        `${process.env.REACT_APP_LLAVE_AES_ENCRYPT}`,
-        `${process.env.REACT_APP_IV_AES_ENCRYPT}`,
+        `${process.env.NEXT_PUBLIC_APP_LLAVE_AES_ENCRYPT}`,
+        `${process.env.NEXT_PUBLIC_APP_IV_AES_ENCRYPT}`,
         items
       ),
     };
