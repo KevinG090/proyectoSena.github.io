@@ -17,7 +17,7 @@ export default function Home() {
           className="relative "
           src="/undraw_Welcoming_re_x0qo.png"
           alt="menu"
-          width={200}
+          width={300}
           height={50}
           priority
         />

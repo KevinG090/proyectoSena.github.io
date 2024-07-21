@@ -28,7 +28,7 @@ export default function Sidebar({ isSidebarOpen = false, showSidebar = () => { }
 
   return (
     <div className={`flex flex-col fixed justify-beetwen place-items-center  bg-backg-container-gray ${isSidebarOpen ? '' : 'hidden'} gap-4 w-48 max-[360px]:w-full md:w-86 h-screen z-40 `}>
-      <h5 className="relative place-items-left text-xs my-8">{InfoUser?.userInfo?.nombre_usuario ?? ""}</h5>
+      <h5 className="relative place-items-left text-xs my-8">{String(InfoUser?.userInfo?.nombre_usuario ?? "").toUpperCase()}</h5>
       <Image
         className="rounded-full cursor-pointer z-50"
         src="/undraw_Profile_pic_re_iwgo.png"

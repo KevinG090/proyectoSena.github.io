@@ -160,7 +160,6 @@ export default function page() {
     const onClickEdit = useCallback((ev: any, item: any = {}) => {
         try {
             ev.preventDefault()
-            console.log(item)
             setSelectMateria({
                 "pk_id_materia": item?.pk_id_materia ?? "",
                 "nombre_materia": item?.nombre_materia ?? "",
