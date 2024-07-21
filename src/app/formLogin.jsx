@@ -2,9 +2,10 @@
 
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback, useContext } from "react";
-import { fetchGetRequest } from "./utils/fetch"
+import { fetchPostRequest } from "./utils/fetch"
 import { urlLogin } from "./utils/routes"
 import { notify, notifyError } from "./utils/notify"
+import { cifrarAES } from "./utils/login"
 import { infoContext } from "./hooks/AuthHook"
 
 export default function FormLogin() {
@@ -18,23 +19,19 @@ export default function FormLogin() {
     ev.preventDefault();
 
     const formData = new FormData(ev.currentTarget);
-    const formDataEntries = formData.entries();
-
-    // Convertir FormDataEntries a un array de objetos
-    const formDataArray = Array.from(formDataEntries);
-
-    // Modificar los datos según sea necesario
-    const modifiedFormData = formDataArray.map(([key, value]) => {
-      return [key, value];
-    });
-    // Convertir el array modificado a URLSearchParams
-    const modifiedQueries = new URLSearchParams(modifiedFormData).toString();
-
+    let items = Object.fromEntries(Object.entries(Object.fromEntries(formData)))
+    let body = {
+      data: cifrarAES(
+        `${process.env.REACT_APP_LLAVE_AES_ENCRYPT}`,
+        `${process.env.REACT_APP_IV_AES_ENCRYPT}`,
+        items
+      ),
+    };
 
     try {
       const url = urlLogin()
       setLoadingItems(true)
-      const { data } = await fetchGetRequest(`${url}?${modifiedQueries}`)
+      const { data } = await fetchPostRequest(url,body)
       // notify(data?.msg ?? "Consulta Exitosa")
       setInfoUser(false)
       setLoadingItems(false)
@@ -79,7 +76,7 @@ export default function FormLogin() {
       onSubmit={createInvoice}
     >
       <div className="form-login relative flex flex-col place-items-left my-10">
-        <label htmlFor="email">Correo <b>*</b></label>
+        <label htmlFor="email">Correo <b className='text-red-500'>*</b></label>
         <input
           className="bg-backg-inputs rounded-inputs mt-2 py-1 px-5"
           type="text"
@@ -89,11 +86,11 @@ export default function FormLogin() {
         />
       </div>
       <div className="form-login relative flex flex-col place-items-left mt-5 mb-10">
-        <label htmlFor="passworld">Contraseña <b>*</b></label>
+        <label htmlFor="password">Contraseña <b className='text-red-500'>*</b></label>
         <input
           type="password"
-          name="passworld"
-          id="passworld"
+          name="password"
+          id="password"
           className="bg-backg-inputs rounded-inputs mt-2 py-1 px-5"
           required
         />
